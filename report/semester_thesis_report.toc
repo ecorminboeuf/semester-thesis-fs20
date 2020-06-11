@@ -1,0 +1,5 @@
+\babel@toc {british}{}
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {2}Setup and Method}{1}
+\contentsline {section}{\numberline {3}Results}{1}
+\contentsline {section}{\numberline {4}Summary and Conclusion}{1}
