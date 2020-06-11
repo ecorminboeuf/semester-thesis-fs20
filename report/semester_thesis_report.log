@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.10.6)  25 MAY 2020 16:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.10.6)  11 JUN 2020 13:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -256,80 +256,45 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \footskip=30.0pt
 * \marginparwidth=54.2025pt
 * \marginparsep=11.0pt
-* \columnsep=28.45274pt
+* \columnsep=10.0pt
 * \skip\footins=9.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
-* \@twocolumntrue
+* \@twocolumnfalse
 * \@twosidefalse
 * \@mparswitchfalse
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 28.
+LaTeX Font Info:    Try loading font information for U+msa on input line 21.
 (c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 28.
+LaTeX Font Info:    Try loading font information for U+msb on input line 21.
  (c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./semester_thesis_report.toc)
 \tf@toc=\write3
 \openout3 = `semester_thesis_report.toc'.
 
+ [1
 
-Underfull \hbox (badness 10000) in paragraph at lines 50--52
-[]\OT1/cmr/m/it/10 Debye tem-per-at-ure of cop-per\OT1/cmr/m/n/10 , Know-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 50--52
-\OT1/cmr/m/n/10 ledgedoor, URL: $\OT1/cmtt/m/n/10 http : / / www .
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 50--52
-\OT1/cmtt/m/n/10 knowledgedoor . com / 2 / elements _
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 50--52
-\OT1/cmtt/m/n/10 handbook / debye _ temperature . html$\OT1/cmr/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 1014) in paragraph at lines 53--55
-[]\OT1/cmr/m/it/10 Material con-stants of cop-per, te-flon and
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 53--55
-\OT1/cmr/m/it/10 beryl-lium\OT1/cmr/m/n/10 , En-gin-eer-ing Tool-box, URL:
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 53--55
-\OT1/cmtt/m/n/10 https : / / www . engineeringtoolbox . com/$\OT1/cmr/m/n/10 ,
- []
-
-[1{c:/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
-
-
-] (./semester_thesis_report.aux) ) 
+{c:/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] (./semester_thesis_report.aux) ) 
 Here is how much of TeX's memory you used:
- 3645 strings out of 492639
- 48801 string characters out of 6133088
- 131738 words of memory out of 5000000
- 7448 multiletter control sequences out of 15000+600000
- 12317 words of font info for 48 fonts, out of 8000000 for 9000
+ 3646 strings out of 492639
+ 48820 string characters out of 6133088
+ 133737 words of memory out of 5000000
+ 7451 multiletter control sequences out of 15000+600000
+ 12017 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,7n,43p,289b,309s stack positions out of 5000i,500n,10000p,200000b,80000s
-<c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on semester_thesis_report.pdf (1 page, 118628 bytes).
+ 41i,12n,43p,308b,262s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+sy10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on semester_thesis_report.pdf (3 pages, 194969 bytes).
 PDF statistics:
- 44 PDF objects out of 1000 (max. 8388607)
- 31 compressed objects within 1 object stream
+ 90 PDF objects out of 1000 (max. 8388607)
+ 65 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

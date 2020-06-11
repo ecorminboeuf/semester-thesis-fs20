@@ -14,41 +14,84 @@
 \author{Etienne Corminboeuf}
 \date{\today}
 
-\usepackage[twocolumn, left = 3cm, right = 3cm, columnsep = 1cm]{geometry}
+\usepackage[left = 3cm, right = 3cm]{geometry}
 
 \begin{document}
 
-\twocolumn[
-\begin{@twocolumnfalse}
-  \maketitle
-  \begin{abstract}
-    This is the abstract of the following report.
-  \end{abstract}
-\end{@twocolumnfalse}
-]
+\maketitle
+
 \tableofcontents
 
 \section{Introduction}
-Here I introduce the topic of the semester thesis.
+
+\subsection{Mathematic model}
+
+In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in \cite{paper_orvg} and quickly recapulate that derivation.
+In quantum mechanics, the time evolution of a particle subject to a magnetic field is governed by the Pauli equation
+\begin{align} \label{eq_pauli}
+  i \hbar \partial_t \Psi(x,t) &= H_P(t)\Psi(x,t) \\
+  H_P(t) :&= \frac{1}{2m} \sum_{k=1}^d (p_k - e A_k(x,t))^2 + e\phi(x,t) + \tilde{V}(x,t)
+\end{align}
+where $\tilde{V}(x,t)$ is some external potential.
+The magnetic field 2-form $dA$ associated with $B(t)$ is independent of x because of the homogeneity of $B(t)$ and we can thus rewrite the magnetic vector potential to
+\begin{equation}
+  A(x,t) := \frac{1}{2}B_{jk}(t)x^j \textrm{d}x^k,
+\end{equation}
+where $B(t)$ = $(B_{jk}(t))_{j,k = 1}^d$ is a real, skew-symmetric matrix. Using the operators
+\begin{align}
+  L_{jk} & := x_j p_k - x_k p_j \\
+  H_B(t) & := - \sum_{j,k = 1}^d B_{jk}(t) L_{jk}
+\end{align}
+the Pauli-Hamiltonian takes the form
+\begin{equation}
+  H_P(t) = \frac{1}{2 m} \left(\hbar^{2}(-\Delta)-e \sum_{1 \leqslant j<k \leqslant d} B_{j k}(t) L_{j k} +\frac{e^{2}}{4}\|B(t) x\|_{\mathbb{R}^{d}}^{2}  \right) + e \phi(x,t) + \tilde{V}(x,t).
+\end{equation}
+
+\subsection{Numerical model}
+We introduce $\epsilon ^2 := \hbar$ and redefine $t$, $x$ and $B$ to find the simplified form
+\begin{equation}
+  H_P(t) = -\Delta + H_B(t) + V(x,t)
+\end{equation}
+where $V(x,t) := \frac{1}{2m}\frac{e^{2}}{4}\|B(t) x\|_{\mathbb{R}^{d}}^{2} + e \phi(x,t) + \tilde{V}(x,t)$ is the total potential.
+The Schr{\"o}dinger equation is then split up into three separate parts that can be solved numerically.
+\begin{align}
+  i \epsilon^2 \partial_t \Psi &= -\Delta \Psi \label{num_kin} \tag{K}\\
+  i \epsilon^2 \partial_t \Psi &= H_B(t) \Psi \label{num_M} \tag{M}\\
+  i \epsilon^2 \partial_t \Psi &= V(x,t) \Psi \label{num_pot} \tag{P}
+\end{align}
+(\ref{num_kin}) can be solved discretely in Fourier-space and (\ref{num_pot}) by pointwise multiplication with $e^{-i/\epsilon ^2 \int_{t_0}^t dt V(x,t)}$. (\ref{num_M}) is reduced to the linear differential equation
+\begin{equation} \label{num_B} \tag{B}
+  \frac{d}{dt}y(t) = B(t)y(t)
+\end{equation}
+\cite{simon_reed} proves the existence of a solution $U(t,t_0)$ to (\ref{num_B}). The unitary representation
+\begin{align}
+  \rho : SO(d) &\longrightarrow U(L^2(\mathbb{R}^d)) \\
+  R &\longmapsto (\rho (R)\Psi)(x) = \Psi(R^{-1} x)
+\end{align}
+maps the solution $U(t, t_0)$ of (\ref{num_B}) to a solution of (\ref{num_M}). The proof of this statement can be found in \cite{paper_orvg}. The exact flow map $U(t, t_0)$ is approximated through a Magnus expansion proposed by \cite{magnus_integrators}.
+
+
 \section{Setup and Method}
 
 \section{Results}
 
 \section{Summary and Conclusion}
 
-
 \begin{thebibliography}{9}
-\bibitem{vp}
-  D. Meister, A. Reinhard, B. Tilma.
-  \textit{Specific heat capacity of beryllium},
-  Advanced Physics Laboratory ETH, Instruction notes, (2014).
-\bibitem{debye_be}
-  R. W. Hill, P. L. Smith.
-  \textit{LXVIII. The specific heat of beryllium at low temperatures},
-  The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, (1953).
-\bibitem{debye_copper}
-  \textit{Debye temperature of copper},
-  Knowledgedoor, URL: \url{http://www.knowledgedoor.com/2/elements_handbook/debye_temperature.html}, visited 08.12.2019.
+\bibitem{paper_orvg}
+  V. Gradinaru and O. Rietmann.
+  \textit{A High-Order Integrator for the
+          Schr{\"o}odinger Equation with Time-Dependent,
+          Homogeneous Magnetic Field}.
+  Unpublished article, ETH Z{\"u}rich, submitted for publication, 2020.
+\bibitem{simon_reed}
+  B. Simon and M. Reed.
+  \textit{Fourier Analysis, Self-Adjointness, Volume 2} of \textit{Methods of Modern Mathematical Physics}.
+  Academic Press, Boston, 1975.
+\bibitem{magnus_integrators}
+  S. Blanes and P.C. Moan.
+  \textit{Fourth- and sixth-order commutator-free Magnus integrators for linear and non-linear dynamical systems}.
+  Applied Numerical Mathematics, 56(12):1519 - 1537, 2006.
 \bibitem{constants}
   \textit{Material constants of copper, teflon and beryllium},
   Engineering Toolbox, URL: \url{https://www.engineeringtoolbox.com/}, visited 09.12.2019.

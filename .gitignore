@@ -1,0 +1,22 @@
+# LaTeX compilation side-effects
+
+*.aux
+*.fls
+*.log
+*.out
+*.thm
+*.toc
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+
+# Editor files
+tags
