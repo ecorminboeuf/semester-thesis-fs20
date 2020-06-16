@@ -8,6 +8,37 @@
 \usepackage{amssymb}
 \usepackage{url}
 \usepackage[british]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+%%\usepackage{minted}
 
 
 \title{Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
@@ -26,7 +57,7 @@
 
 \subsection{Mathematic model}
 
-In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in \cite{paper_orvg} and quickly recapulate that derivation.
+In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in \cite{paper_orvg} and quickly recap the important elements. For a full derivation please consult \cite{paper_orvg}.
 In quantum mechanics, the time evolution of a particle subject to a magnetic field is governed by the Pauli equation
 \begin{align} \label{eq_pauli}
   i \hbar \partial_t \Psi(x,t) &= H_P(t)\Psi(x,t) \\
@@ -52,8 +83,12 @@ We introduce $\epsilon ^2 := \hbar$ and redefine $t$, $x$ and $B$ to find the si
 \begin{equation}
   H_P(t) = -\Delta + H_B(t) + V(x,t)
 \end{equation}
-where $V(x,t) := \frac{1}{2m}\frac{e^{2}}{4}\|B(t) x\|_{\mathbb{R}^{d}}^{2} + e \phi(x,t) + \tilde{V}(x,t)$ is the total potential.
-The Schr{\"o}dinger equation is then split up into three separate parts that can be solved numerically.
+where $V(x,t) := \frac{1}{2m}\frac{e^{2}}{4}\|B(t) x\|_{\mathbb{R}^{d}}^{2} + e \phi(x,t) + \tilde{V}(x,t)$ can be considered to be a total effective potential.
+The Schr{\"o}dinger equation
+\begin{equation} \label{num_main} \tag{H}
+  i \epsilon ^2 \partial_t \Psi(x, t) = H_P(t)\Psi(x,t)
+\end{equation}
+is then split up into three separate parts that can be solved numerically.
 \begin{align}
   i \epsilon^2 \partial_t \Psi &= -\Delta \Psi \label{num_kin} \tag{K}\\
   i \epsilon^2 \partial_t \Psi &= H_B(t) \Psi \label{num_M} \tag{M}\\
@@ -63,15 +98,68 @@ The Schr{\"o}dinger equation is then split up into three separate parts that can
 \begin{equation} \label{num_B} \tag{B}
   \frac{d}{dt}y(t) = B(t)y(t)
 \end{equation}
-\cite{simon_reed} proves the existence of a solution $U(t,t_0)$ to (\ref{num_B}). The unitary representation
-\begin{align}
+\cite{simon_reed} proves the existence of a flow map $U(t,t_0)$ which is a solution to (\ref{num_B}). The unitary representation
+\begin{align} \label{eq_rho}
   \rho : SO(d) &\longrightarrow U(L^2(\mathbb{R}^d)) \\
   R &\longmapsto (\rho (R)\Psi)(x) = \Psi(R^{-1} x)
 \end{align}
 maps the solution $U(t, t_0)$ of (\ref{num_B}) to a solution of (\ref{num_M}). The proof of this statement can be found in \cite{paper_orvg}. The exact flow map $U(t, t_0)$ is approximated through a Magnus expansion proposed by \cite{magnus_integrators}.
+Direct calculation shows  $[-\Delta$, $H_B(t)] = 0$. Thus the flow maps solving (\ref{num_kin}) and (\ref{num_M}) yield a solution to the differential equation
+\begin{equation} \label{num_K_M} \tag{K+M}
+  i \epsilon ^2 \partial_t \Psi = (-\Delta + H_B(t))\Psi
+\end{equation}
+in the following way: Denote the solutions to (\ref{num_kin}) and (\ref{num_M}) by $\Phi_{-\Delta}$ and $\Phi_{H_B}$ respectively. This means that the flow map to (\ref{num_kin}) satisfies
+\begin{equation}
+  i \frac{d}{dt}\Phi_{-\Delta}(t, t_0) = -\Delta \Phi_{-\Delta}(t, t_0), \quad \Phi_{-\Delta}(t_0, t_0) = id,
+\end{equation}
+and analogously for the flow map to (\ref{num_M}). The flow map $\Phi_{-\Delta + H_B}$ which is a solution to (\ref{num_K_M}) then follows as a simple multiplication
+\begin{equation}
+  \Phi_{-\Delta + H_B}(t, t_0) = \Phi_{H_B}(t, t_0)\Phi_{-\Delta}(t, t_0) = \Phi_{-\Delta}(t, t_0)\Phi_{H_B}(t, t_0).
+\end{equation}
+Finally, combining the solutions to (\ref{num_K_M}) and (\ref{num_pot}) using a splitting scheme leads to a solution of \ref{num_main}.
+
+\subsection{Splitting}
+Consider a splitting scheme with the coefficients $(a_i, b_i)$ for $1 \leq i \leq n$. Consider the time grids
+\begin{equation}
+  t_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} b_{j} \quad \text { and } \quad s_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} a_{j}
+\end{equation}
+to an initial time $t_0$. \cite{paper_orvg} derives an explicit expression of the solution to \ref{num_main} as follows:
+\begin{equation}
+  \Phi_{H}\left(t_{0}+N h, t_{0}\right) \approx\left(\prod_{j=0}^{N-1} \prod_{i=0}^{n-1} \Phi_{-\Delta}\left(t_{i+1}, t_{i}\right) \Phi_{\rho\left(U\left(t_{0}+N h, t_{i}+j h\right)\right) V}\left(s_{i+1}+j h, s_{i}+j h\right)\right) \Phi_{H_{B}}\left(t_{0}+N h, t_{0}\right)
+\end{equation}
+where $h$ is the splitting time step, $\rho$ the representation defined in eq. \ref{eq_rho} and $U(t, t_0)$ the exact flow map to (\ref{num_B}).
 
 
-\section{Setup and Method}
+\section{Implementation}
+\subsection{WaveBlocksND}
+//something about waveblocks
+
+\subsection{Code}\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+%%\inputminted{python}{../FourierMagneticPropagator.py}
+
+\lstinputlisting[language=Python]{../FourierMagneticPropagator.py}
+
+%%\input{../FourierLatex}
 
 \section{Results}
 

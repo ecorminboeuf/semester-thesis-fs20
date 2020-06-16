@@ -1,0 +1,270 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}The WaveBlocks Project}
+
+\PY{l+s+sd}{This file contains the Fourier Magnetic Propagator class. The wavefunction}
+\PY{l+s+sd}{:math:`\PYZbs{}Psi` is propagated in time with a splitting of the}
+\PY{l+s+sd}{exponential :math:`\PYZbs{}exp(\PYZhy{}\PYZbs{}frac\PYZob{}i\PYZcb{}\PYZob{}\PYZbs{}varepsilon\PYZca{}2\PYZcb{} \PYZbs{}tau H)`.}
+
+\PY{l+s+sd}{@author: R. Bourquin}
+\PY{l+s+sd}{@copyright: Copyright (C) 2012, 2016 R. Bourquin}
+\PY{l+s+sd}{@license: Modified BSD License}
+\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+
+\PY{k+kn}{from} \PY{n+nn}{numpy} \PY{k+kn}{import} \PY{n}{array}\PY{p}{,} \PY{n}{complexfloating}\PY{p}{,} \PY{n}{dot}\PY{p}{,} \PY{n}{exp}\PY{p}{,} \PY{n}{eye}\PY{p}{,} \PY{n}{zeros}\PY{p}{,} \PY{n}{shape}
+\PY{k+kn}{from} \PY{n+nn}{numpy.fft} \PY{k+kn}{import} \PY{n}{fftn}\PY{p}{,} \PY{n}{ifftn}
+\PY{k+kn}{from} \PY{n+nn}{scipy.linalg} \PY{k+kn}{import} \PY{n}{expm}
+
+\PY{k+kn}{from} \PY{n+nn}{WaveBlocksND.BlockFactory} \PY{k+kn}{import} \PY{n}{BlockFactory}
+\PY{k+kn}{from} \PY{n+nn}{WaveBlocksND.Propagator} \PY{k+kn}{import} \PY{n}{Propagator}
+\PY{k+kn}{from} \PY{n+nn}{WaveBlocksND.KineticOperator} \PY{k+kn}{import} \PY{n}{KineticOperator}
+\PY{k+kn}{from} \PY{n+nn}{WaveBlocksND.MagneticField} \PY{k+kn}{import} \PY{n}{MagneticField}
+\PY{k+kn}{from} \PY{n+nn}{WaveBlocksND.SplittingParameters} \PY{k+kn}{import} \PY{n}{SplittingParameters}
+
+\PY{n}{\PYZus{}\PYZus{}all\PYZus{}\PYZus{}} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FourierMagneticPropagator}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+
+\PY{k}{class} \PY{n+nc}{FourierMagneticPropagator}\PY{p}{(}\PY{n}{Propagator}\PY{p}{,} \PY{n}{SplittingParameters}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}This class can numerically propagate given initial values :math:`\PYZbs{}Psi(x\PYZus{}0, t\PYZus{}0)` on}
+\PY{l+s+sd}{    a potential hyper surface :math:`V(x)`, in presence of a magnetic field. The propagation is done with a splitting}
+\PY{l+s+sd}{    of the time propagation operator :math:`\PYZbs{}exp(\PYZhy{}\PYZbs{}frac\PYZob{}i\PYZcb{}\PYZob{}\PYZbs{}varepsilon\PYZca{}2\PYZcb{} \PYZbs{}tau H)`.}
+\PY{l+s+sd}{    Available splitting schemes are implemented in :py:class:`SplittingParameters`.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{parameters}\PY{p}{,} \PY{n}{potential}\PY{p}{,} \PY{n}{initial\PYZus{}values}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize a new :py:class:`FourierMagneticPropagator` instance. Precalculate the}
+\PY{l+s+sd}{        the kinetic operator :math:`T\PYZus{}e` and the potential operator :math:`V\PYZus{}e`}
+\PY{l+s+sd}{        used for time propagation.}
+
+\PY{l+s+sd}{        :param parameters: The set of simulation parameters. It must contain at least}
+\PY{l+s+sd}{                           the semi\PYZhy{}classical parameter :math:`\PYZbs{}varepsilon` and the}
+\PY{l+s+sd}{                           time step size :math:`\PYZbs{}tau`.}
+\PY{l+s+sd}{        :param potential: The potential :math:`V(x)` governing the time evolution.}
+\PY{l+s+sd}{        :type potential: A :py:class:`MatrixPotential` instance.}
+\PY{l+s+sd}{        :param initial\PYZus{}values: The initial values :math:`\PYZbs{}Psi(\PYZbs{}Gamma, t\PYZus{}0)` given}
+\PY{l+s+sd}{                               in the canonical basis.}
+\PY{l+s+sd}{        :type initial\PYZus{}values: A :py:class:`WaveFunction` instance.}
+
+\PY{l+s+sd}{        :raise: :py:class:`ValueError` If the number of components of :math:`\PYZbs{}Psi` does not match the}
+\PY{l+s+sd}{                           number of energy surfaces :math:`\PYZbs{}lambda\PYZus{}i(x)` of the potential.}
+
+\PY{l+s+sd}{        :raise: :py:class:`ValueError` If the number of components of :math:`\PYZbs{}Psi` does not match the dimension of the magnetic field :math:`\PYZbs{}vec\PYZob{}B\PYZcb{}(x)`.}
+
+\PY{l+s+sd}{        :raise: :py:class:`ValueError` If the dimensions of the splitting scheme parameters :math:`a` and :math:`b` are not equal.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} The embedded \PYZsq{}MatrixPotential\PYZsq{} instance representing the potential \PYZsq{}V\PYZsq{}.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential} \PY{o}{=} \PY{n}{potential}
+
+        \PY{c+c1}{\PYZsh{} The initial values of the components \PYZsq{}\PYZbs{}psi\PYZus{}i\PYZsq{} sampled at the given grid.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi} \PY{o}{=} \PY{n}{initial\PYZus{}values}
+
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}components}\PY{p}{(}\PY{p}{)} \PY{o}{!=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}components}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Potential dimension and number of components do not match.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} The time step size.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} Final time.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}T} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{T}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} The model parameter \PYZsq{}\PYZbs{}varepsilon\PYZsq{}.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eps}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} Spacial dimension d}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dimension} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dimension}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} The position space grid nodes \PYZsq{}\PYZbs{}Gamma\PYZsq{}.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid} \PY{o}{=} \PY{n}{initial\PYZus{}values}\PY{o}{.}\PY{n}{get\PYZus{}grid}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} The kinetic operator \PYZsq{}T\PYZsq{} defined in momentum space.}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO} \PY{o}{=} \PY{n}{KineticOperator}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Exponential \PYZsq{}\PYZbs{}exp(\PYZhy{}i/2*eps\PYZca{}2*dt*T)\PYZsq{} used in the Strang splitting.}
+        \PY{c+c1}{\PYZsh{} not used}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO}\PY{o}{.}\PY{n}{calculate\PYZus{}exponential}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5j} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}TE} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO}\PY{o}{.}\PY{n}{evaluate\PYZus{}exponential\PYZus{}at}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Exponential \PYZsq{}\PYZbs{}exp(\PYZhy{}i/eps\PYZca{}2*dt*V)\PYZsq{} used in the Strang splitting.}
+        \PY{c+c1}{\PYZsh{} not used}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{calculate\PYZus{}exponential}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5j} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt} \PY{o}{/} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{VE} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{evaluate\PYZus{}exponential\PYZus{}at}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}VE} \PY{o}{=} \PY{n+nb}{tuple}\PY{p}{(}\PY{p}{[}\PY{n}{ve}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{ve} \PY{o+ow}{in} \PY{n}{VE}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} The magnetic field}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}B} \PY{o}{=} \PY{n}{MagneticField}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} check if magnetic field and potential are of same dimension}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}B}\PY{o}{.}\PY{n}{get\PYZus{}dimension}\PY{p}{(}\PY{p}{)} \PY{o}{!=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dimension}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Spacial dimension of potential and magnetic field must be the same}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}precalculate the splitting needed}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}a}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}b} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{build}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{splitting\PYZus{}method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+        \PY{k}{if} \PY{n}{shape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}a}\PY{p}{)} \PY{o}{!=} \PY{n}{shape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}b}\PY{p}{)}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Splitting scheme shapes must be the same}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Get inital data as function}
+        \PY{n}{packet\PYZus{}descr} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{initvals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}initalpacket} \PY{o}{=} \PY{n}{BlockFactory}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{create\PYZus{}wavepacket}\PY{p}{(}\PY{n}{packet\PYZus{}descr}\PY{p}{)}
+
+
+    \PY{c+c1}{\PYZsh{} TODO: Consider removing this, duplicate}
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}number\PYZus{}components}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Get the number :math:`N` of components of :math:`\PYZbs{}Psi`.}
+
+\PY{l+s+sd}{        :return: The number :math:`N`.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}components}\PY{p}{(}\PY{p}{)}
+
+
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}wavefunction}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Get the wavefunction that stores the current data :math:`\PYZbs{}Psi(\PYZbs{}Gamma)`.}
+
+\PY{l+s+sd}{        :return: The :py:class:`WaveFunction` instance.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi}
+
+
+    \PY{k}{def} \PY{n+nf}{get\PYZus{}operators}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Get the kinetic and potential operators :math:`T(\PYZbs{}Omega)` and :math:`V(\PYZbs{}Gamma)`.}
+
+\PY{l+s+sd}{        :return: A tuple :math:`(T, V)` containing two ``ndarrays``.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} TODO: What kind of object exactly do we want to return?}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO}\PY{o}{.}\PY{n}{calculate\PYZus{}operator}\PY{p}{(}\PY{p}{)}
+        \PY{n}{T} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO}\PY{o}{.}\PY{n}{evaluate\PYZus{}at}\PY{p}{(}\PY{p}{)}
+        \PY{n}{V} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{evaluate\PYZus{}at}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{p}{)}
+        \PY{n}{V} \PY{o}{=} \PY{n+nb}{tuple}\PY{p}{(}\PY{p}{[}\PY{n}{v}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{V}\PY{p}{]}\PY{p}{)}
+        \PY{k}{return} \PY{p}{(}\PY{n}{T}\PY{p}{,} \PY{n}{V}\PY{p}{)}
+
+
+    \PY{n+nd}{@staticmethod}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}Magnus\PYZus{}CF4}\PY{p}{(}\PY{n}{tspan}\PY{p}{,} \PY{n}{B}\PY{p}{,} \PY{n}{N}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Returns the  Fourth Order Magnus integrator :math:`\PYZbs{}Omega(A)` according to [\PYZsh{}]\PYZus{}.}
+
+\PY{l+s+sd}{        :param tspan: Full timespan of expansion.}
+
+\PY{l+s+sd}{        :param B: Magnetic field matrix :math:`B(t) = (B\PYZus{}\PYZob{}j,k\PYZcb{}(t))\PYZus{}\PYZob{}1 \PYZbs{}leq j, k \PYZbs{}leq d\PYZcb{}`.}
+
+\PY{l+s+sd}{        :param N: Number of timesteps for the expansion.}
+
+\PY{l+s+sd}{        :param *args: Additional arguments for the magnetic field :math:`B(t, *args)`}
+
+\PY{l+s+sd}{        .. [\PYZsh{}] S. Blanes and P.C. Moan. \PYZdq{}Fourth\PYZhy{} and sixth\PYZhy{}order commutator\PYZhy{}free Magnus integrators for linear and non\PYZhy{}linear dynamical systems\PYZdq{}. Applied Numerical Mathematics, 56(12):1519 \PYZhy{} 1537, 2006.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} Magnus constants}
+        \PY{n}{c1} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5773502691896258}\PY{p}{)}
+        \PY{n}{c2} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{+} \PY{l+m+mf}{0.5773502691896258}\PY{p}{)}
+        \PY{n}{a1} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{0.5} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5773502691896258}\PY{p}{)}
+        \PY{n}{a2} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{o}{*}\PY{p}{(}\PY{l+m+mf}{0.5} \PY{o}{+} \PY{l+m+mf}{0.5773502691896258}\PY{p}{)}
+
+        \PY{n}{R} \PY{o}{=} \PY{l+m+mf}{1.}\PY{o}{*}\PY{n}{eye}\PY{p}{(} \PY{n+nb}{len}\PY{p}{(} \PY{n}{B}\PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{*}\PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{)} \PY{p}{)} \PY{p}{)}
+        \PY{n}{h} \PY{o}{=} \PY{p}{(}\PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mf}{1.}\PY{o}{*}\PY{n}{N}\PY{p}{)}
+        \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{:}
+            \PY{n}{t0} \PY{o}{=} \PY{n}{k}\PY{o}{*}\PY{n}{h} \PY{o}{+} \PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+            \PY{n}{t1} \PY{o}{=} \PY{n}{t0} \PY{o}{+} \PY{n}{c1}\PY{o}{*}\PY{n}{h}
+            \PY{n}{t2} \PY{o}{=} \PY{n}{t0} \PY{o}{+} \PY{n}{c2}\PY{o}{*}\PY{n}{h}
+            \PY{n}{B1} \PY{o}{=} \PY{n}{B}\PY{p}{(}\PY{n}{t1}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{)}
+            \PY{n}{B2} \PY{o}{=} \PY{n}{B}\PY{p}{(}\PY{n}{t2}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{)}
+            \PY{n}{R} \PY{o}{=} \PY{n}{dot}\PY{p}{(}\PY{n}{expm}\PY{p}{(}\PY{n}{a1}\PY{o}{*}\PY{n}{h}\PY{o}{*}\PY{n}{B1}\PY{o}{+}\PY{n}{a2}\PY{o}{*}\PY{n}{h}\PY{o}{*}\PY{n}{B2}\PY{p}{)}\PY{p}{,} \PY{n}{dot}\PY{p}{(}\PY{n}{expm}\PY{p}{(}\PY{n}{a2}\PY{o}{*}\PY{n}{h}\PY{o}{*}\PY{n}{B1}\PY{o}{+}\PY{n}{a1}\PY{o}{*}\PY{n}{h}\PY{o}{*}\PY{n}{B2}\PY{p}{)}\PY{p}{,} \PY{n}{R}\PY{p}{)}\PY{p}{)}
+
+        \PY{k}{return} \PY{n}{R}
+
+
+    \PY{k}{def} \PY{n+nf}{post\PYZus{}propagate}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tspan}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Given an initial wavepacket :math:`\PYZbs{}Psi\PYZus{}0` at time :math:`t=0`, calculate the propagated wavepacket :math:`\PYZbs{}Psi` at time :math:`tspan \PYZbs{}[ 0 \PYZbs{}]`. We perform :math:`n = \PYZbs{}lceil tspan\PYZbs{}[ 0 \PYZbs{}] /dt \PYZbs{}rceil` steps of size :math:`dt`.}
+
+\PY{l+s+sd}{        :param tspan: :py class:`ndarray` consisting of end time at position 0, other positions are irrelevant.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{c+c1}{\PYZsh{} (ignoriere tspan[0])}
+        \PY{n}{nsteps} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{/} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Perform }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{nsteps}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ steps from t = 0.0 to t = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+
+        \PY{c+c1}{\PYZsh{} Magnetfeld Matrix B(t)}
+        \PY{n}{B} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}B}\PY{p}{(}\PY{n}{t}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}how many components does Psi have}
+        \PY{n}{N} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}components}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}start time t\PYZus{}0 = 0?}
+        \PY{n}{t0} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{n}{t\PYZus{}a} \PY{o}{=} \PY{n}{t0}
+        \PY{n}{t\PYZus{}b} \PY{o}{=} \PY{n}{t0}
+
+        \PY{c+c1}{\PYZsh{}calculate R = U(t0 + N*h, t0)}
+        \PY{c+c1}{\PYZsh{}Use N = n\PYZus{}steps to account for large time difference}
+        \PY{n}{t\PYZus{}interval} \PY{o}{=} \PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{t0}\PY{p}{,} \PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{R} \PY{o}{=} \PY{n}{FourierMagneticPropagator}\PY{o}{.}\PY{n}{\PYZus{}Magnus\PYZus{}CF4}\PY{p}{(}\PY{n}{t\PYZus{}interval}\PY{p}{,} \PY{n}{B}\PY{p}{,} \PY{n}{nsteps}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} rotate the grid by the transpose of R}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{rotate}\PY{p}{(}\PY{n}{R}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Compute rotated initial data}
+        \PY{n}{X} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}nodes}\PY{p}{(}\PY{n}{flat}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+        \PY{n}{values} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}initalpacket}\PY{o}{.}\PY{n}{evaluate\PYZus{}at}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{prefactor}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+        \PY{n}{values} \PY{o}{=} \PY{n+nb}{tuple}\PY{p}{(}\PY{p}{[}\PY{n}{val}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{val} \PY{o+ow}{in} \PY{n}{values}\PY{p}{]}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi}\PY{o}{.}\PY{n}{set\PYZus{}values}\PY{p}{(}\PY{n}{values}\PY{p}{)}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{rotate}\PY{p}{(}\PY{n}{R}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}calculate the necessary timesteps}
+        \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{nsteps}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}a}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{c+c1}{\PYZsh{} Integral \PYZhy{}\PYZbs{}int\PYZus{}\PYZob{}tspan[0]\PYZcb{}\PYZca{}\PYZob{}tspan[1]\PYZcb{}B\PYZca{}2(s)ds und zugehörige Propagation}
+                \PY{c+c1}{\PYZsh{} (siehe Paper, Remark 3.1)}
+                \PY{n}{minus\PYZus{}B\PYZus{}squared} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{:} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0}\PY{p}{)} \PY{o}{*} \PY{n}{dot}\PY{p}{(}\PY{n}{B}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,} \PY{n}{B}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+                \PY{n}{A} \PY{o}{=} \PY{l+m+mf}{1.0} \PY{o}{/} \PY{l+m+mf}{8.0} \PY{o}{*} \PY{n}{MagneticField}\PY{o}{.}\PY{n}{matrix\PYZus{}quad}\PY{p}{(}\PY{n}{minus\PYZus{}B\PYZus{}squared}\PY{p}{,} \PY{n}{t\PYZus{}a}\PY{p}{,} \PY{n}{t\PYZus{}a} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt}\PY{p}{)}
+
+                \PY{n}{X} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}nodes}\PY{p}{(}\PY{n}{flat}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+                \PY{n}{VB} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{X} \PY{o}{*} \PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{X}\PY{p}{)}\PY{p}{)}
+                \PY{n}{VB} \PY{o}{=} \PY{n}{VB}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                \PY{n}{prop} \PY{o}{=} \PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0j} \PY{o}{/} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{VB}\PY{p}{)} \PY{c+c1}{\PYZsh{} ev. \PYZhy{}0.5j durch \PYZhy{}1j ersetzen...}
+
+                \PY{n}{values} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi}\PY{o}{.}\PY{n}{get\PYZus{}values}\PY{p}{(}\PY{p}{)}
+                \PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{prop} \PY{o}{*} \PY{n}{component} \PY{k}{for} \PY{n}{component} \PY{o+ow}{in} \PY{n}{values}\PY{p}{]}
+
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{calculate\PYZus{}exponential}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0j} \PY{o}{*}  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt} \PY{o}{/}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{rotate}\PY{p}{(}\PY{n}{R}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+                \PY{n}{VE} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}potential}\PY{o}{.}\PY{n}{evaluate\PYZus{}exponential\PYZus{}at}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}VE} \PY{o}{=} \PY{n+nb}{tuple}\PY{p}{(}\PY{p}{[}\PY{n}{ve}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{get\PYZus{}number\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{ve} \PY{o+ow}{in} \PY{n}{VE}\PY{p}{]}\PY{p}{)}
+
+                \PY{c+c1}{\PYZsh{}apply it}
+                \PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}VE} \PY{o}{*} \PY{n}{component} \PY{k}{for} \PY{n}{component} \PY{o+ow}{in} \PY{n}{values}\PY{p}{]}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{o}{.}\PY{n}{rotate}\PY{p}{(}\PY{n}{R}\PY{p}{)}
+
+                \PY{n}{t\PYZus{}interval}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{t\PYZus{}b}
+                \PY{n}{t\PYZus{}interval}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{t\PYZus{}b} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}b}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt}
+
+                \PY{n}{U} \PY{o}{=} \PY{p}{(}\PY{n}{FourierMagneticPropagator}\PY{o}{.}\PY{n}{\PYZus{}Magnus\PYZus{}CF4}\PY{p}{(}\PY{n}{t\PYZus{}interval}\PY{p}{,} \PY{n}{B}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}
+                \PY{n}{R} \PY{o}{=} \PY{n}{dot}\PY{p}{(}\PY{n}{R} \PY{p}{,} \PY{n}{U}\PY{p}{)}
+                \PY{k}{if}\PY{p}{(}\PY{n}{R}\PY{o}{.}\PY{n}{shape} \PY{o}{!=} \PY{n}{U}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{:}
+                    \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Shapes of R and U do not match}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+                \PY{c+c1}{\PYZsh{}check for obsolete splitting steps}
+                \PY{k}{if}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}b}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{fftn}\PY{p}{(}\PY{n}{component}\PY{p}{)} \PY{k}{for} \PY{n}{component} \PY{o+ow}{in} \PY{n}{values}\PY{p}{]}
+
+                    \PY{c+c1}{\PYZsh{} Apply the kinetic operator}
+                    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO} \PY{o}{=} \PY{n}{KineticOperator}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}grid}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{p}{)}
+                    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO}\PY{o}{.}\PY{n}{calculate\PYZus{}exponential}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5j} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}eps}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}b}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt}\PY{p}{)}
+
+                    \PY{n}{TE} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}KO}\PY{o}{.}\PY{n}{evaluate\PYZus{}exponential\PYZus{}at}\PY{p}{(}\PY{p}{)}
+                    \PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{TE} \PY{o}{*} \PY{n}{component} \PY{k}{for} \PY{n}{component} \PY{o+ow}{in} \PY{n}{values}\PY{p}{]}
+
+                    \PY{c+c1}{\PYZsh{} Go back to real space}
+                    \PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{ifftn}\PY{p}{(}\PY{n}{component}\PY{p}{)} \PY{k}{for} \PY{n}{component} \PY{o+ow}{in} \PY{n}{values}\PY{p}{]}
+
+                \PY{c+c1}{\PYZsh{}Apply}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}psi}\PY{o}{.}\PY{n}{set\PYZus{}values}\PY{p}{(}\PY{n}{values}\PY{p}{)}
+
+                \PY{c+c1}{\PYZsh{}update t\PYZus{}a and t\PYZus{}b}
+                \PY{n}{t\PYZus{}a} \PY{o}{=} \PY{n}{t\PYZus{}a} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt}
+                \PY{n}{t\PYZus{}b} \PY{o}{=} \PY{n}{t\PYZus{}b} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}b}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}dt}
+
+        \PY{k}{return} \PY{n}{tspan}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+
+    \PY{k}{def} \PY{n+nf}{propagate}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tspan}\PY{p}{)}\PY{p}{:}
+        \PY{l+s+sa}{r}\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}This method does nothing.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+\end{Verbatim}
