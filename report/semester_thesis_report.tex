@@ -10,6 +10,8 @@
 \usepackage[british]{babel}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage[toc, page]{appendix}
+\usepackage[ruled, vlined]{algorithm2e}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -54,10 +56,9 @@
 \tableofcontents
 
 \section{Introduction}
-
+In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in the paper by Gradinaru and Rietmann and quickly recap the important elements. For a full derivation please consult \cite{paper_orvg}.
 \subsection{Mathematic model}
 
-In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in \cite{paper_orvg} and quickly recap the important elements. For a full derivation please consult \cite{paper_orvg}.
 In quantum mechanics, the time evolution of a particle subject to a magnetic field is governed by the Pauli equation
 \begin{align} \label{eq_pauli}
   i \hbar \partial_t \Psi(x,t) &= H_P(t)\Psi(x,t) \\
@@ -103,7 +104,7 @@ is then split up into three separate parts that can be solved numerically.
   \rho : SO(d) &\longrightarrow U(L^2(\mathbb{R}^d)) \\
   R &\longmapsto (\rho (R)\Psi)(x) = \Psi(R^{-1} x)
 \end{align}
-maps the solution $U(t, t_0)$ of (\ref{num_B}) to a solution of (\ref{num_M}). The proof of this statement can be found in \cite{paper_orvg}. The exact flow map $U(t, t_0)$ is approximated through a Magnus expansion proposed by \cite{magnus_integrators}.
+maps the solution $U(t, t_0)$ of (\ref{num_B}) to a solution of (\ref{num_M}). The proof of this statement can be found in \cite{paper_orvg}. The exact flow map $U(t, t_0)$ is approximated through a Magnus expansion proposed by Blanes and Moan \cite{magnus_integrators}.
 Direct calculation shows  $[-\Delta$, $H_B(t)] = 0$. Thus the flow maps solving (\ref{num_kin}) and (\ref{num_M}) yield a solution to the differential equation
 \begin{equation} \label{num_K_M} \tag{K+M}
   i \epsilon ^2 \partial_t \Psi = (-\Delta + H_B(t))\Psi
@@ -119,7 +120,7 @@ and analogously for the flow map to (\ref{num_M}). The flow map $\Phi_{-\Delta +
 Finally, combining the solutions to (\ref{num_K_M}) and (\ref{num_pot}) using a splitting scheme leads to a solution of \ref{num_main}.
 
 \subsection{Splitting}
-Consider a splitting scheme with the coefficients $(a_i, b_i)$ for $1 \leq i \leq n$. Consider the time grids
+Consider a splitting scheme with the coefficients $(a_i, b_i)$ for $1 \leq i \leq n$ and the time grids
 \begin{equation}
   t_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} b_{j} \quad \text { and } \quad s_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} a_{j}
 \end{equation}
@@ -131,10 +132,24 @@ where $h$ is the splitting time step, $\rho$ the representation defined in eq. \
 
 
 \section{Implementation}
-\subsection{WaveBlocksND}
-//something about waveblocks
+The method summarised above was implemented into the WaveBlocksND project, developed by Bourquin and Gradinaru \cite{waveblocksnd}. For that a new \textit{FourierMagneticPropagator}-class was created, based on the existing \textit{FourierPropagator}-class. The contents of said method are contained in the \textit{`post_propagate'}-function. The full class code can be found in Appendix \ref{appendix:code}. In this section, we present the \textit{`post_propagate'}-function and explain its approach.
 
-\subsection{Code}\lstdefinestyle{mystyle}{
+// include post propagate code here 
+// comments explain whats going on
+
+\section{Results}
+
+//include convergence plots here
+
+//also include wavefct plot and discuss similarities to paper
+
+\section{Summary and Conclusion}
+
+\begin{appendices}
+
+
+\section{Code} \label{appendix:code}
+    \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
@@ -157,19 +172,19 @@ where $h$ is the splitting time step, $\rho$ the representation defined in eq. \
 
 %%\inputminted{python}{../FourierMagneticPropagator.py}
 
+%% make sure to refresh this at the end
 \lstinputlisting[language=Python]{../FourierMagneticPropagator.py}
 
 %%\input{../FourierLatex}
 
-\section{Results}
+\end{appendices}
 
-\section{Summary and Conclusion}
 
 \begin{thebibliography}{9}
 \bibitem{paper_orvg}
   V. Gradinaru and O. Rietmann.
   \textit{A High-Order Integrator for the
-          Schr{\"o}odinger Equation with Time-Dependent,
+          Schr{\"o}dinger Equation with Time-Dependent,
           Homogeneous Magnetic Field}.
   Unpublished article, ETH Z{\"u}rich, submitted for publication, 2020.
 \bibitem{simon_reed}
@@ -180,14 +195,11 @@ where $h$ is the splitting time step, $\rho$ the representation defined in eq. \
   S. Blanes and P.C. Moan.
   \textit{Fourth- and sixth-order commutator-free Magnus integrators for linear and non-linear dynamical systems}.
   Applied Numerical Mathematics, 56(12):1519 - 1537, 2006.
-\bibitem{constants}
-  \textit{Material constants of copper, teflon and beryllium},
-  Engineering Toolbox, URL: \url{https://www.engineeringtoolbox.com/}, visited 09.12.2019.
-\bibitem{c_te}
-  G. T. Furukawa et al.
-  \textit{Specific heat capacity of teflon},
-  Journal of Research of the National Bureau of Standards. Vol. 49, No. 4 (1952). Page 273 - 279.
-
+\bibitem{waveblocksnd}
+  R. Bourquin and V. Gradinaru.
+  \textit{{WaveBlocks}: Reusable building blocks for simulations with semiclassical wavepackets},
+  GitHub, URL: \url{https://github.com/WaveBlocks/WaveBlocksND},
+  2010 - 2016.
 
 \end{thebibliography}
 
