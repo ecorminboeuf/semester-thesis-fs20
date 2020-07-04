@@ -1,9 +1,10 @@
 \babel@toc {british}{}
-\contentsline {section}{\numberline {1}Introduction}{1}
-\contentsline {subsection}{\numberline {1.1}Mathematic model}{1}
-\contentsline {subsection}{\numberline {1.2}Numerical model}{2}
-\contentsline {subsection}{\numberline {1.3}Splitting}{3}
-\contentsline {section}{\numberline {2}Implementation}{3}
-\contentsline {section}{\numberline {3}Summary and Conclusion}{3}
-\contentsline {section}{Appendices}{3}
-\contentsline {section}{\numberline {A}Code}{3}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Mathematic model}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Numerical model}{2}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Splitting}{3}{subsection.1.3}
+\contentsline {section}{\numberline {2}Implementation}{3}{section.2}
+\contentsline {section}{\numberline {3}Results}{4}{section.3}
+\contentsline {section}{\numberline {4}Summary and Conclusion}{4}{section.4}
+\contentsline {section}{Appendices}{4}{section*.11}
+\contentsline {section}{\numberline {A}Code}{4}{Appendix.a.A}

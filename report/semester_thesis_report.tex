@@ -11,7 +11,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[toc, page]{appendix}
-\usepackage[ruled, vlined]{algorithm2e}
+\usepackage[linesnumbered, ruled, vlined]{algorithm2e}
+\usepackage{hyperref}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -55,7 +56,7 @@
 
 \tableofcontents
 
-\section{Introduction}
+\section{Introduction} \label{sec:intro}
 In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in the paper by Gradinaru and Rietmann and quickly recap the important elements. For a full derivation please consult \cite{paper_orvg}.
 \subsection{Mathematic model}
 
@@ -125,17 +126,77 @@ Consider a splitting scheme with the coefficients $(a_i, b_i)$ for $1 \leq i \le
   t_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} b_{j} \quad \text { and } \quad s_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} a_{j}
 \end{equation}
 to an initial time $t_0$. \cite{paper_orvg} derives an explicit expression of the solution to \ref{num_main} as follows:
-\begin{equation}
+\begin{equation} \label{eq:timesteps}
   \Phi_{H}\left(t_{0}+N h, t_{0}\right) \approx\left(\prod_{j=0}^{N-1} \prod_{i=0}^{n-1} \Phi_{-\Delta}\left(t_{i+1}, t_{i}\right) \Phi_{\rho\left(U\left(t_{0}+N h, t_{i}+j h\right)\right) V}\left(s_{i+1}+j h, s_{i}+j h\right)\right) \Phi_{H_{B}}\left(t_{0}+N h, t_{0}\right)
 \end{equation}
-where $h$ is the splitting time step, $\rho$ the representation defined in eq. \ref{eq_rho} and $U(t, t_0)$ the exact flow map to (\ref{num_B}).
+where $h$ is the splitting time step, $\rho$ the representation defined in eq. \ref{eq_rho} and $U(t, t_0)$ the exact flow map to (\ref{num_B}). \newline
+To simplify the numerical calculations the propagator for the potential part $\Phi_{V} = \exp(-i \int_{t_0}^t V(x, s)ds)$ can be rewritten using the definition $V(x, t) = \lVert{B(t)x}\rVert_{\mathbb{R}^d}^2 + \phi(x,t)$ to
+\begin{equation} \label{eq:rotinv}
+  \int_{t_0}^t V(x, s) ds = \langle x, \left( -\int _{t_0}^t B^2(s)ds\right)x \rangle + \int _{t_0}^t \phi(x, s)ds.
+\end{equation}
 
 
 \section{Implementation}
-The method summarised above was implemented into the WaveBlocksND project, developed by Bourquin and Gradinaru \cite{waveblocksnd}. For that a new \textit{FourierMagneticPropagator}-class was created, based on the existing \textit{FourierPropagator}-class. The contents of said method are contained in the \textit{`post_propagate'}-function. The full class code can be found in Appendix \ref{appendix:code}. In this section, we present the \textit{`post_propagate'}-function and explain its approach.
+The method summarised above was implemented into the WaveBlocksND project, developed by Bourquin and Gradinaru \cite{waveblocksnd}. To that avail we created a new \emph{FourierMagneticPropagator}-class, based on the existing \emph{FourierPropagator}-class. The full class code can be found in Appendix \ref{appendix:code}. In this section, we present the \emph{`postpropagate'}-function which carries the implementation of section \ref{sec:intro} and explain its approach. \newline
+The \emph{FourierMagneticPropagator}-class carries the header portrayed in figure \ref{fig:doc_fmp}.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width = 0.9\textwidth]{graphics/doc_fmp.PNG}
+  \caption{Documentation-Header of the FourierMagneticPropagator Class.}
+  \label{fig:doc_fmp}
+\end{figure}
+The code of the \emph{postpropagate}-function is summarised in Algorithm \ref{alg:postpropagate} and can also be found in Appendix \ref{appendix:code}. It implements the propagator from equation \ref{alg:postpropagate} and is based on Algorithm 1 from \cite{paper_orvg}. Its header reads as portrayed in figure~\ref{fig:pp}.
+\begin{figure}
+  \centering
+  \includegraphics[width = 0.9 \textwidth]{graphics/doc_postpropagate.PNG}
+  \caption{Header of the postpropagate-function.}
+  \label{fig:pp}
+\end{figure}
 
-// include post propagate code here 
-// comments explain whats going on
+The flow map $\rho$ from equation \ref{eq_rho} effectively acts as a rotation. These rotations could not directly be applied onto the potential $V$ or the wavefunction $\Psi$ but had to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate the quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ we need to reverse the above rotation to return to the original state. \newline
+Because of the rotational invariance of the first term in equation \ref{eq:rotinv}, in the term $\Phi_{\rho(U(t_0 + Nh, t_i + jh))V}$ only the electric potential $\phi$ needs to be subjected to such a rotation.
+
+\begin{algorithm}[h]
+  \label{alg:postpropagate}
+    \SetAlgoLined
+    \caption{PostPropagate Function}
+    \BlankLine
+
+    \KwData{\emph{As arguments to the function:} class instance $self$; end time $t$.\newline \emph{As arguments to the class instance:} step width $dt$; meshgrid $X$; initial wave function $\Psi_0$; potential $V$; magnetic field $B$; number of components of the wavefunction $N$; quantisation parameter $\epsilon$; splitting method with coefficients $(a_i, b_i)_{i = 1}^n$; end time of simulation $T$; dimension $d$; frequency of writing to disk $w_n$.}
+    \KwResult{ Computes wavepacket at time $t$ and saves it to class member. \textbf{Returns:} End time $t$.}
+
+    define stepwidth: $n_{steps}$ = $\lceil t / dt \rceil $\;
+    define time grids: $t_a = t_0$, $t_b = t_0$ \;
+    calculate flow map $R = U(t_0 + N\cdot dt, t_0)$ \;
+    rotate the grid by $R^T$ \;
+    evaluate initial data on rotated grid and save to wavefunction $\Psi$\;
+    rotate grid back \;
+
+    \For{j = 0 to nsteps}{
+      \For{i = 0 to dim(a)}{
+        potential propagator $\Phi_V = \Phi_{B} \cdot \Phi_{\phi}:$ \\{
+          \Indp calculate magnetic field propagator $\Phi_{B} = \exp(-i \langle x, (\int_{t_a}^{t_a + a_i \cdot dt} B^2(s) ds)x \rangle)$ \;
+          apply propagator to $\Psi$ \;
+          rotate grid by $R^T$ \;
+          calculate electric and external potential propagator $\Phi_{\phi} = \exp(-i \int_{t_a}^{t_a + a_i \cdot dt} (\phi(x,s) + V_{ext}) ds)$ \;
+          apply propagator to $\Psi$ on rotated grid \;
+          rotate grid back \;
+        }
+        calculate flow map $R = R\cdot U^{-1}(t_b + b_i \cdot dt, t_b)$ \;
+        kinetic propagator $\Phi_{-\Delta}$: \\
+        {
+          \Indp Fast-Fourier-Transform $\Psi$ to Fourier space \;
+          calculate the kinetic propagator $Phi_{-\Delta}$ \;
+          apply propagator to $\mathcal{FFT}(\Psi)$ \;
+          Inverse-FFT $\Psi$ to real space \;
+        }
+        update time grids: $t_a = t_a + a_i \cdot dt$, $t_b = t_b + b_i \cdot dt$ \;
+      }
+    }
+    \Return{t}
+
+\end{algorithm}
+
 
 \section{Results}
 
@@ -183,21 +244,21 @@ The method summarised above was implemented into the WaveBlocksND project, devel
 \begin{thebibliography}{9}
 \bibitem{paper_orvg}
   V. Gradinaru and O. Rietmann.
-  \textit{A High-Order Integrator for the
+  \emph{A High-Order Integrator for the
           Schr{\"o}dinger Equation with Time-Dependent,
           Homogeneous Magnetic Field}.
   Unpublished article, ETH Z{\"u}rich, submitted for publication, 2020.
 \bibitem{simon_reed}
   B. Simon and M. Reed.
-  \textit{Fourier Analysis, Self-Adjointness, Volume 2} of \textit{Methods of Modern Mathematical Physics}.
+  \emph{Fourier Analysis, Self-Adjointness, Volume 2} of \emph{Methods of Modern Mathematical Physics}.
   Academic Press, Boston, 1975.
 \bibitem{magnus_integrators}
   S. Blanes and P.C. Moan.
-  \textit{Fourth- and sixth-order commutator-free Magnus integrators for linear and non-linear dynamical systems}.
+  \emph{Fourth- and sixth-order commutator-free Magnus integrators for linear and non-linear dynamical systems}.
   Applied Numerical Mathematics, 56(12):1519 - 1537, 2006.
 \bibitem{waveblocksnd}
   R. Bourquin and V. Gradinaru.
-  \textit{{WaveBlocks}: Reusable building blocks for simulations with semiclassical wavepackets},
+  \emph{{WaveBlocks}: Reusable building blocks for simulations with semiclassical wavepackets},
   GitHub, URL: \url{https://github.com/WaveBlocks/WaveBlocksND},
   2010 - 2016.
 
