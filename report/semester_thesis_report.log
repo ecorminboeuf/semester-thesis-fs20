@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.10.6)  4 JUL 2020 18:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2018.10.6)  9 JUL 2020 18:23
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -334,49 +334,70 @@ Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 282.
 )
 \Hy@SectionHShift=\skip74
+) (c:/texlive/2018/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2018/10/05 v3.3-153 Customizing captions (AR)
+ (c:/texlive/2018/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2018/09/12 v1.8c caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 64.
+\captionmargin=\dimen129
+\captionmargin@=\dimen130
+\captionwidth=\dimen131
+\caption@tempdima=\dimen132
+\caption@indent=\dimen133
+\caption@parindent=\dimen134
+\caption@hangindent=\dimen135
+)
+\c@caption@flags=\count128
+\c@ContinuedFloat=\count129
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+) (c:/texlive/2018/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2018/05/01 v1.1-162 Sub-captions (AR)
+\c@subfigure=\count130
+\c@subtable=\count131
 ) (c:/texlive/2018/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2018/04/16 v5.8 Page Geometry
-\Gm@cnth=\count128
-\Gm@cntv=\count129
-\c@Gm@tempcnt=\count130
-\Gm@bindingoffset=\dimen129
-\Gm@wd@mp=\dimen130
-\Gm@odd@mp=\dimen131
-\Gm@even@mp=\dimen132
-\Gm@layoutwidth=\dimen133
-\Gm@layoutheight=\dimen134
-\Gm@layouthoffset=\dimen135
-\Gm@layoutvoffset=\dimen136
+\Gm@cnth=\count132
+\Gm@cntv=\count133
+\c@Gm@tempcnt=\count134
+\Gm@bindingoffset=\dimen136
+\Gm@wd@mp=\dimen137
+\Gm@odd@mp=\dimen138
+\Gm@even@mp=\dimen139
+\Gm@layoutwidth=\dimen140
+\Gm@layoutheight=\dimen141
+\Gm@layouthoffset=\dimen142
+\Gm@layoutvoffset=\dimen143
 \Gm@dimlist=\toks23
 ) (./semester_thesis_report.aux)
 \openout1 = `semester_thesis_report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
  (c:/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count131
-\scratchdimen=\dimen137
+\scratchcounter=\count135
+\scratchdimen=\dimen144
 \scratchbox=\box38
-\nofMPsegments=\count132
-\nofMParguments=\count133
+\nofMPsegments=\count136
+\nofMParguments=\count137
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count134
-\MPscratchDim=\dimen138
-\MPnumerator=\count135
-\makeMPintoPDFobject=\count136
+\MPscratchCnt=\count138
+\MPscratchDim=\dimen145
+\MPnumerator=\count139
+\makeMPintoPDFobject=\count140
 \everyMPtoPDFconversion=\toks25
 ) (c:/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -390,23 +411,25 @@ Package grfext Info: Graphics extension search list:
  (c:/texlive/2018/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-\c@lstlisting=\count137
+\c@lstlisting=\count141
 \AtBeginShipoutBox=\box39
-Package hyperref Info: Link coloring OFF on input line 53.
+Package hyperref Info: Link coloring OFF on input line 55.
  (c:/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
  (c:/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count138
+\c@section@level=\count142
 )
-LaTeX Info: Redefining \ref on input line 53.
-LaTeX Info: Redefining \pageref on input line 53.
-LaTeX Info: Redefining \nameref on input line 53.
+LaTeX Info: Redefining \ref on input line 55.
+LaTeX Info: Redefining \pageref on input line 55.
+LaTeX Info: Redefining \nameref on input line 55.
  (./semester_thesis_report.out) (./semester_thesis_report.out)
 \@outlinefile=\write3
 \openout3 = `semester_thesis_report.out'.
 
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -442,11 +465,11 @@ LaTeX Info: Redefining \nameref on input line 53.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 56.
+LaTeX Font Info:    Try loading font information for U+msa on input line 58.
 (c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 56.
+LaTeX Font Info:    Try loading font information for U+msb on input line 58.
  (c:/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./semester_thesis_report.toc)
@@ -459,42 +482,173 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.120 \end{equation}
-                    pdfTeX warning (ext4): destination with the same identifier (name{equation.1.8}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.120 \end{equation}
-                    ]
-Overfull \hbox (4.57587pt too wide) detected at line 131
+l.109 \end{align}
+                 ]
+Overfull \hbox (4.57587pt too wide) detected at line 133
 []\OT1/cmr/m/n/10 ^^H[] [] \OMS/cmsy/m/n/10 ^^Y [] \OT1/cmr/m/n/10 ^^H[] []
  []
 
-<graphics/doc_fmp.PNG, id=123, 485.31313pt x 86.82437pt>
+<graphics/doc_fmp.PNG, id=177, 485.31313pt x 86.82437pt>
 File: graphics/doc_fmp.PNG Graphic file (type png)
 <use graphics/doc_fmp.PNG>
-Package pdftex.def Info: graphics/doc_fmp.PNG  used on input line 144.
+Package pdftex.def Info: graphics/doc_fmp.PNG  used on input line 146.
 (pdftex.def)             Requested size: 399.21791pt x 71.42563pt.
-<graphics/doc_postpropagate.PNG, id=130, 460.21938pt x 97.86563pt>
-File: graphics/doc_postpropagate.PNG Graphic file (type png)
-<use graphics/doc_postpropagate.PNG>
-Package pdftex.def Info: graphics/doc_postpropagate.PNG  used on input line 151.
-(pdftex.def)             Requested size: 399.21791pt x 84.89897pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3pdfTeX warning (ext4): destination with the same identifier (name{equation.1.10}) has been already used, duplicate ignored
+
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
+
+ []
+
+[3pdfTeX warning (ext4): destination with the same identifier (name{equation.1.8}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.158 
-      ]
+l.152 
+      pdfTeX warning (ext4): destination with the same identifier (name{equation.1.10}) has been already used, duplicate ignored
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.152 
+      ]
+<graphics/doc_postpropagate.PNG, id=197, 460.21938pt x 97.86563pt>
+File: graphics/doc_postpropagate.PNG Graphic file (type png)
+<use graphics/doc_postpropagate.PNG>
+Package pdftex.def Info: graphics/doc_postpropagate.PNG  used on input line 156.
+(pdftex.def)             Requested size: 399.21791pt x 84.89897pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--163
+
+ []
+
+[4 <./graphics/doc_fmp.PNG> <./graphics/doc_postpropagate.PNG>]
+
+LaTeX Warning: Reference `' on page 5 undefined on input line 207.
+
+[5]
+<graphics/threefold_morse/threefold_energies_block0.PNG, id=246, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/threefold_energies_block0.PNG Graphic file (type png)
+<use graphics/threefold_morse/threefold_energies_block0.PNG>
+Package pdftex.def Info: graphics/threefold_morse/threefold_energies_block0.PNG  used on input line 239.
+(pdftex.def)             Requested size: 199.60895pt x 149.70757pt.
+<graphics/threefold_morse/energy_drift_block0_log.PNG, id=247, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/energy_drift_block0_log.PNG Graphic file (type png)
+<use graphics/threefold_morse/energy_drift_block0_log.PNG>
+Package pdftex.def Info: graphics/threefold_morse/energy_drift_block0_log.PNG  used on input line 244.
+(pdftex.def)             Requested size: 199.60895pt x 149.70757pt.
+
+
+./semester_thesis_report.tex:251: LaTeX Error: Unknown float option `H'.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.251 \begin{figure}[H]
+                       
+Option `H' ignored and `p' used.
+
+<graphics/threefold_morse/norms_block0.PNG, id=248, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/norms_block0.PNG Graphic file (type png)
+<use graphics/threefold_morse/norms_block0.PNG>
+Package pdftex.def Info: graphics/threefold_morse/norms_block0.PNG  used on input line 253.
+(pdftex.def)             Requested size: 199.60895pt x 149.70757pt.
+<graphics/threefold_morse/norms_drift_block0_log.PNG, id=249, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/norms_drift_block0_log.PNG Graphic file (type png)
+<use graphics/threefold_morse/norms_drift_block0_log.PNG>
+Package pdftex.def Info: graphics/threefold_morse/norms_drift_block0_log.PNG  used on input line 258.
+(pdftex.def)             Requested size: 199.60895pt x 149.70757pt.
+
+./semester_thesis_report.tex:267: LaTeX Error: Unknown float option `H'.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.267 \begin{figure}[H]
+                       
+Option `H' ignored and `p' used.
+
+<graphics/threefold_morse/threefold_perCPU.pdf, id=251, 433.62pt x 289.08pt>
+File: graphics/threefold_morse/threefold_perCPU.pdf Graphic file (type pdf)
+<use graphics/threefold_morse/threefold_perCPU.pdf>
+Package pdftex.def Info: graphics/threefold_morse/threefold_perCPU.pdf  used on input line 269.
+(pdftex.def)             Requested size: 221.78923pt x 147.86111pt.
+<graphics/threefold_morse/threefold_RSS.pdf, id=252, 433.62pt x 289.08pt>
+File: graphics/threefold_morse/threefold_RSS.pdf Graphic file (type pdf)
+<use graphics/threefold_morse/threefold_RSS.pdf>
+Package pdftex.def Info: graphics/threefold_morse/threefold_RSS.pdf  used on input line 274.
+(pdftex.def)             Requested size: 221.78923pt x 147.86111pt.
+<graphics/threefold_morse/threefold_VSZ.pdf, id=253, 433.62pt x 289.08pt>
+File: graphics/threefold_morse/threefold_VSZ.pdf Graphic file (type pdf)
+<use graphics/threefold_morse/threefold_VSZ.pdf>
+Package pdftex.def Info: graphics/threefold_morse/threefold_VSZ.pdf  used on input line 279.
+(pdftex.def)             Requested size: 221.78923pt x 147.86111pt.
+
+Overfull \hbox (6.66663pt too wide) in paragraph at lines 268--282
+[][]   []
+ []
+
+[6 <./graphics/threefold_morse/threefold_energies_block0.png> <./graphics/threefold_morse/energy_drift_block0_log.png>]
+
+LaTeX Warning: Reference `fig:cos_norm' on page 7 undefined on input line 298.
+
+
+./semester_thesis_report.tex:300: LaTeX Error: Unknown float option `H'.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.300 \begin{figure}[H]
+                       
+Option `H' ignored and `p' used.
+
+<graphics/torsional/energies_block0.PNG, id=269, 462.528pt x 346.896pt>
+File: graphics/torsional/energies_block0.PNG Graphic file (type png)
+<use graphics/torsional/energies_block0.PNG>
+Package pdftex.def Info: graphics/torsional/energies_block0.PNG  used on input line 302.
+(pdftex.def)             Requested size: 199.60895pt x 149.70757pt.
+<graphics/torsional/energy_drift_block0_log.PNG, id=270, 462.528pt x 346.896pt>
+File: graphics/torsional/energy_drift_block0_log.PNG Graphic file (type png)
+<use graphics/torsional/energy_drift_block0_log.PNG>
+Package pdftex.def Info: graphics/torsional/energy_drift_block0_log.PNG  used on input line 307.
+(pdftex.def)             Requested size: 199.60895pt x 149.70757pt.
+
+./semester_thesis_report.tex:318: LaTeX Error: Unknown float option `H'.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.318 \begin{figure}[H]
+                       
+Option `H' ignored and `p' used.
+
+<../parser/cospot_perCPU.pdf, id=272, 433.62pt x 289.08pt>
+File: ../parser/cospot_perCPU.pdf Graphic file (type pdf)
+<use ../parser/cospot_perCPU.pdf>
+Package pdftex.def Info: ../parser/cospot_perCPU.pdf  used on input line 320.
+(pdftex.def)             Requested size: 221.78923pt x 147.86111pt.
+<../parser/cospot_RSS.pdf, id=273, 433.62pt x 289.08pt>
+File: ../parser/cospot_RSS.pdf Graphic file (type pdf)
+<use ../parser/cospot_RSS.pdf>
+Package pdftex.def Info: ../parser/cospot_RSS.pdf  used on input line 325.
+(pdftex.def)             Requested size: 221.78923pt x 147.86111pt.
+<../parser/cospot_VSZ.pdf, id=274, 433.62pt x 289.08pt>
+File: ../parser/cospot_VSZ.pdf Graphic file (type pdf)
+<use ../parser/cospot_VSZ.pdf>
+Package pdftex.def Info: ../parser/cospot_VSZ.pdf  used on input line 330.
+(pdftex.def)             Requested size: 221.78923pt x 147.86111pt.
+
+Overfull \hbox (6.66663pt too wide) in paragraph at lines 319--333
+[][]   []
+ []
 
 (c:/texlive/2018/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2018/09/02 1.7 listings language file
-) (../FourierMagneticPropagator.py [4 <./graphics/doc_fmp.PNG> <./graphics/doc_postpropagate.PNG>] [5] [6] [7]
+) (../FourierMagneticPropagator.py [7] [8] [9] [10]
 LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 211.
 LaTeX Font Info:    No file OMScmtt.fd. on input line 211.
 
@@ -503,35 +657,148 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textparagraph' on input line 211.
 
-[8]) [9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 267.
- [10] [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 267.
+[11])
+<graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000000.PNG, id=526, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000000.PNG Graphic file (type png)
+<use graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000000.PNG>
+Package pdftex.def Info: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000000.PNG  used on input line 381.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000100.PNG, id=527, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000100.PNG Graphic file (type png)
+<use graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000100.PNG>
+Package pdftex.def Info: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000100.PNG  used on input line 385.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000200.PNG, id=528, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000200.PNG Graphic file (type png)
+<use graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000200.PNG>
+Package pdftex.def Info: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000200.PNG  used on input line 389.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000300.PNG, id=529, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000300.PNG Graphic file (type png)
+<use graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000300.PNG>
+Package pdftex.def Info: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000300.PNG  used on input line 393.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000400.PNG, id=530, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000400.PNG Graphic file (type png)
+<use graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000400.PNG>
+Package pdftex.def Info: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000400.PNG  used on input line 397.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000500.PNG, id=531, 462.528pt x 346.896pt>
+File: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000500.PNG Graphic file (type png)
+<use graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000500.PNG>
+Package pdftex.def Info: graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000500.PNG  used on input line 401.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 380--403
+[][]  []
+ []
+
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 380--403
+[]  []
+ []
+
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 380--403
+[]  [] 
+ []
+
+[12]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000000.PNG, id=587, 462.528pt x 346.896pt>
+File: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000000.PNG Graphic file (type png)
+<use graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000000.PNG>
+Package pdftex.def Info: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000000.PNG  used on input line 411.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000100.PNG, id=588, 462.528pt x 346.896pt>
+File: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000100.PNG Graphic file (type png)
+<use graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000100.PNG>
+Package pdftex.def Info: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000100.PNG  used on input line 415.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000200.PNG, id=589, 462.528pt x 346.896pt>
+File: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000200.PNG Graphic file (type png)
+<use graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000200.PNG>
+Package pdftex.def Info: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000200.PNG  used on input line 419.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000300.PNG, id=590, 462.528pt x 346.896pt>
+File: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000300.PNG Graphic file (type png)
+<use graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000300.PNG>
+Package pdftex.def Info: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000300.PNG  used on input line 423.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000400.PNG, id=591, 462.528pt x 346.896pt>
+File: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000400.PNG Graphic file (type png)
+<use graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000400.PNG>
+Package pdftex.def Info: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000400.PNG  used on input line 427.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+<graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000500.PNG, id=592, 462.528pt x 346.896pt>
+File: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000500.PNG Graphic file (type png)
+<use graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000500.PNG>
+Package pdftex.def Info: graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000500.PNG  used on input line 431.
+(pdftex.def)             Requested size: 221.78923pt x 166.34409pt.
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 410--433
+[][]  []
+ []
+
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 410--433
+[]  []
+ []
+
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 410--433
+[]  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 470.
+[13] [14 <./graphics/threefold_morse/norms_block0.png> <./graphics/threefold_morse/norms_drift_block0_log.png>] [15 <./graphics/threefold_morse/threefold_perCPU.pdf> <./graphics/threefold_morse/threefold_RSS.pdf
+
+pdfTeX warning: pdflatex.exe (file ./graphics/threefold_morse/threefold_RSS.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./graphics/threefold_morse/threefold_VSZ.pdf
+
+pdfTeX warning: pdflatex.exe (file ./graphics/threefold_morse/threefold_VSZ.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [16 <./graphics/torsional/energies_block0.png> <./graphics/torsional/energy_drift_block0_log.png>] [17 <../parser/cospot_perCPU.pdf> <../parser/cospot_RSS.pdf
+
+pdfTeX warning: pdflatex.exe (file ../parser/cospot_RSS.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <../parser/cospot_VSZ.pdf
+
+pdfTeX warning: pdflatex.exe (file ../parser/cospot_VSZ.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [18 <./graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000000.png> <./graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000100.png> <./graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000200.png> <./graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000300.png> <./graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000400.png> <./graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000500.png>] [19 <./graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000000.png> <./graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000100.png> <./graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000200.png> <./graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000300.png> <./graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000400.png> <./graphics/torsional/wavefunction_contour_block_0_level_0_ti
+mestep_0000500.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 470.
  (./semester_thesis_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 267.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 267.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 470.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 470.
 Package rerunfilecheck Info: File `semester_thesis_report.out' has not changed.
-(rerunfilecheck)             Checksum: 37E345A60597937CA20B5A38D999442E;471.
+(rerunfilecheck)             Checksum: 92328F5694D77C803763F1B45A80FAB7;1392.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 267.
+
+LaTeX Warning: There were undefined references.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 470.
  ) 
 Here is how much of TeX's memory you used:
- 10786 strings out of 492639
- 151995 string characters out of 6133088
- 724805 words of memory out of 5000000
- 14183 multiletter control sequences out of 15000+600000
- 13101 words of font info for 51 fonts, out of 8000000 for 9000
+ 12083 strings out of 492639
+ 180264 string characters out of 6133088
+ 732038 words of memory out of 5000000
+ 15419 multiletter control sequences out of 15000+600000
+ 13400 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,15n,43p,630b,2175s stack positions out of 5000i,500n,10000p,200000b,80000s
-<c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2018/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on semester_thesis_report.pdf (11 pages, 338585 bytes).
+ 36i,17n,43p,693b,2173s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><c:/texlive/2018/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on semester_thesis_report.pdf (19 pages, 960651 bytes).
 PDF statistics:
- 629 PDF objects out of 1000 (max. 8388607)
- 584 compressed objects within 6 object streams
- 345 named destinations out of 1000 (max. 500000)
- 83 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 994 PDF objects out of 1000 (max. 8388607)
+ 732 compressed objects within 8 object streams
+ 377 named destinations out of 1000 (max. 500000)
+ 299 words of extra memory for PDF output out of 10000 (max. 10000000)
 
