@@ -1,0 +1,555 @@
+% Originally developed by Andreas Wieser and Prof. Manfred Einsiedler.
+
+% \documentclass[11pt,a4paper,oneside]{book}
+
+% Default packages and configurations {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[T1]{fontenc}
+\usepackage{amscd}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% \usepackage{comment}
+\usepackage{dsfont}
+\usepackage{enumerate}
+% \usepackage{faktor}
+\usepackage{fancyhdr}
+
+
+%% STUART BIB URL BREAK
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+
+
+\usepackage[hidelinks]{hyperref}
+% Colour settings for hyperlink references
+% \hypersetup{%
+%   colorlinks=false,
+%   allcolors=black,
+%   pdfborderstyle={/S/U/W 1} % Underline of width 1pt
+% }
+\hypersetup{%
+  colorlinks,
+  allcolors=black
+}
+\usepackage[nameinlink]{cleveref}
+
+\usepackage{indentfirst}
+% \usepackage{mathtools}
+% \usepackage{url}
+\usepackage{verbatim}
+% \usepackage{xspace}
+
+% Figures
+\usepackage[final]{graphicx}
+% \usepackage{caption}
+% \usepackage{float}
+% \usepackage{import}
+% \usepackage{pdfpages}
+% \usepackage{subcaption}
+% Note, graphicx must be imported before tikz
+\usepackage{tikz-cd}
+\usepackage{tikz}
+% @legacy, used to have 'quotes' tikzlibrary as well
+\usetikzlibrary{angles,arrows,calc,decorations.pathmorphing,matrix,shapes}
+% \usepackage{transparent}
+% \usepackage{xifthen}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page Layout {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Setting white space {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{vmargin}
+\RequirePackage[ansinew]{inputenc}
+% {L}{T}{R}{B}{Head height}{Head separation}{Foot height}{Foot separation}
+\setmarginsrb{1.25in}{0.6in}{1.25in}{0.8in}{20pt}{0.25in}{9pt}{0.3in}
+
+% Set line spacing to 1.25
+\usepackage{setspace}
+\setstretch{1.2}
+\setlength{\parskip}{0.25em}
+
+% Kill indent at first line of new paragraphs
+\setlength{\parindent}{15pt}
+
+% Let height of page content vary from page to page (instead of stretching text
+% body)
+\raggedbottom
+
+% Manage justification rules
+\doublehyphendemerits=10000    % No consecutive line hyphens.
+\brokenpenalty=10000           % No broken words across columns/pages.
+\widowpenalty=9999             % Almost no widows at bottom of page.
+\clubpenalty=9999              % Almost no orphans at top of page.
+\interfootnotelinepenalty=9999 % Almost never break footnotes.
+\binoppenalty=9999             % Almost never break binary operators.
+\relpenalty=9999               % Almost never break binary relations.
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Headers and footers {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Fancy has a header- and footer-rule, see below
+\pagestyle{fancy}
+% Clear old settings for headers and footers
+\fancyhf{}
+
+% Only mark the name of section
+% N.b: This will be the last section starting on current page
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+
+% Set line width for header and footer
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.6pt}
+
+% Clear old settings
+\lhead{}
+\rhead{}
+\rfoot{\thepage}
+\lfoot{}
+
+% Use same settings as prescribed in default pagestyle
+
+\fancypagestyle{plain}{%
+  \fancyhf{}                           % Clear old settings
+  \fancyfoot[R]{\thepage}              % ...except the right footer
+  \renewcommand{\headrulewidth}{0.6pt} % Set line strength for header
+  \renewcommand{\footrulewidth}{0.6pt} % Set line strength for footer
+}
+
+% Using this for title page
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Miscellaneous
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Force footnotes to the bottom of the page
+\usepackage[bottom]{footmisc}
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Text Body {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Typesetting tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{lecture}
+\newcommand{\lecture}[1]{%
+  \stepcounter{lecture}
+  \marginpar{\color{orange}\flushleft{\footnotesize Lecture: \thelecture{} #1}}
+}
+
+\usepackage{mdframed}
+\newmdenv[
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep,
+  innertopmargin=1pt,
+  innerbottommargin=1pt,
+  skipabove=10pt,
+  skipbelow=10pt,
+]{siderules}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table of Contents {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{titlesec}
+\usepackage[titles]{tocloft}
+% Format section titles in TOC
+\renewcommand\cftsecfont{\scshape}
+% Format page numbers in TOC
+\renewcommand\cftsecpagefont{\normalfont}
+% @language Set name of TOC
+\AtBeginDocument{\renewcommand\contentsname{Table of Contents}}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Renew \cite command for more control of appearance
+\let\defaultcite\cite
+\renewcommand{\cite}[2][]{%
+  \textnormal{\defaultcite[#1]{#2}}%
+}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Generic tools {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% When referencing lists, often we need two write things such as
+% "\textit{(iii)}" which is long. This macro "enumerated reference" makes it
+% easier.
+% Usage: \eref{n}
+\newcommand{\eref}[1]{\textit{(\romannumeral#1)}}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math-Environments {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. \newtheorem{<Internal name>}{<External name>}[<env>]
+%    Is counted after <env>. e.g.
+%    \newtheorem{corollary}{Corollary}[theorem]
+%    Theorem 1 is succeeded by Corollary 1.2
+% 2. \newtheorem{<Internal name>}[<env>]{<External name>}[<env>]
+%    \newtheorem{corollary}[theorem]{Corollary}
+%    Is shares counter with <env>. i.e. Theorem 1 is succeeded by Corollary 2
+
+% Declare a new theoremstyle
+% \newtheoremstyle{mystyle}%
+%    {3pt}                   % Space above
+%    {3pt}                   % Space below
+%    {\itshape\color{red}}   % Body font
+%    {}                      % Indent amount
+%    {\bfseries\color{blue}} % Theorem head font
+%    {.}                     % Punctuation after theorem head
+%    {.5em}                  % Space after theorem head
+%    {}                      % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{plain}
+
+% Base number off chapter if documentclass 'book' is selected, else use
+% sections.
+
+\ifundef{\chapter}{%
+  \newtheorem{theorem}{Theorem}[section]
+  \numberwithin{equation}{section}
+  \numberwithin{figure}{section}
+}{%
+  \newtheorem{theorem}{Theorem}[chapter]
+  \numberwithin{equation}{chapter}
+  \numberwithin{figure}{chapter}
+}
+
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{theorem-extra}{Theorem*}
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{proposition-extra}{Proposition*}
+
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{lemma-extra}{Lemma*}
+
+\newtheorem*{fact}{Fact}
+
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{generic-corollary}[theorem]{Corollary}
+
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{example*}{Example}
+
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem*{exercise*}{Exercise}
+\newtheorem{important-exercise}[theorem]{Important Exercise}
+
+\newtheorem{reminder}[theorem]{Reminder}
+
+\theoremstyle{remark}
+  \newtheorem*{remark}{Remark}
+\theoremstyle{plain}
+
+\theoremstyle{definition}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem*{definition*}{Definition}
+\theoremstyle{plain}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematical notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Tool for moving maths expressions
+\makeatletter
+\newcommand{\raisemath}[1]{\mathpalette{\raisemAth{#1}} }
+\newcommand{\raisemAth}[3]{\raisebox{#1}{$#2#3$}}
+\makeatother
+
+\newcommand{\define}[1]{\textit{#1}}
+
+% Special Letters {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% For faster typesetting of the calligraphic letters
+\newcommand{\bA}{\mathbb{A}}
+\newcommand{\bB}{\mathbb{B}}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\bD}{\mathbb{D}}
+\newcommand{\bE}{\mathbb{E}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\bG}{\mathbb{G}}
+\newcommand{\bH}{\mathbb{H}}
+\newcommand{\bI}{\mathbb{I}}
+\newcommand{\bJ}{\mathbb{J}}
+\newcommand{\bK}{\mathbb{K}}
+\newcommand{\bL}{\mathbb{L}}
+\newcommand{\bM}{\mathbb{M}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bO}{\mathbb{O}}
+\newcommand{\bP}{\mathbb{P}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bS}{\mathbb{S}}
+\newcommand{\bT}{\mathbb{T}}
+\newcommand{\bU}{\mathbb{U}}
+\newcommand{\bV}{\mathbb{V}}
+\newcommand{\bW}{\mathbb{W}}
+\newcommand{\bX}{\mathbb{X}}
+\newcommand{\bY}{\mathbb{Y}}
+\newcommand{\bZ}{\mathbb{Z}}
+
+% For faster typesetting of the calligraphic letters
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+% For faster typesetting of the fraction letters
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fB}{\mathfrak{B}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fD}{\mathfrak{D}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fF}{\mathfrak{F}}
+\newcommand{\fG}{\mathfrak{G}}
+\newcommand{\fH}{\mathfrak{H}}
+\newcommand{\fI}{\mathfrak{I}}
+\newcommand{\fJ}{\mathfrak{J}}
+\newcommand{\fK}{\mathfrak{K}}
+\newcommand{\fL}{\mathfrak{L}}
+\newcommand{\fM}{\mathfrak{M}}
+\newcommand{\fN}{\mathfrak{N}}
+\newcommand{\fO}{\mathfrak{O}}
+\newcommand{\fP}{\mathfrak{P}}
+\newcommand{\fQ}{\mathfrak{Q}}
+\newcommand{\fR}{\mathfrak{R}}
+\newcommand{\fS}{\mathfrak{S}}
+\newcommand{\fT}{\mathfrak{T}}
+\newcommand{\fU}{\mathfrak{U}}
+\newcommand{\fV}{\mathfrak{V}}
+\newcommand{\fW}{\mathfrak{W}}
+\newcommand{\fX}{\mathfrak{X}}
+\newcommand{\fY}{\mathfrak{Y}}
+\newcommand{\fZ}{\mathfrak{Z}}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sets {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\subset}{\subseteq}
+\renewcommand{\supset}{\supseteq}
+\renewcommand{\complement}[1]{{#1}^{c}}
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\interior}[1]{\mathring{#1}}
+
+% Set
+\newcommand{\set}[1]{\left\lbrace#1\right\rbrace}
+% Set with conditions (vertical line)
+\newcommand{\cset}[2]{\left\lbrace#1\,\mid\,#2\right\rbrace}
+% Big Set
+\newcommand{\bigset}[1]{\bigl\lbrace#1\bigr\rbrace}
+% Big Set with conditions (vertical line)
+\newcommand{\bigcset}[2]{\bigl\lbrace#1\,\mid\,#2\bigr\rbrace}
+% Tuple
+\newcommand{\tup}[1]{\left(#1\right)}
+
+% Characteristic function
+\DeclareMathOperator{\one}{\mathds{1}}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Trigonometric functions {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\arcosh}{arcosh}
+\DeclareMathOperator{\artanh}{artanh}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Analysis {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Derivatives
+\DeclareMathOperator{\De}{\thinspace{\rm{D}} }       % Derivative
+\DeclareMathOperator{\boldpartial}{\pmb{\partial}}   % (Bold) partial derivative
+\DeclareMathOperator{\de}{\thinspace{\rm{d}} }       % Derivative
+\DeclareMathOperator{\divergence}{div}               % Divergence
+\DeclareMathOperator{\dvol}{\,\operatorname{dvol}}   % Volumetric integration
+\DeclareMathOperator{\euler}{\operatorname{e}}       % Euler's constant
+\DeclareMathOperator{\graph}{\operatorname{graph}}   % Graph
+\DeclareMathOperator{\ii}{\operatorname{i}}          % Imaginary unit
+\let\Im\defaultIm{}
+\DeclareMathOperator{\Im}{Im}                        % Imaginary part
+\DeclareMathOperator{\laplace}{\Delta}               % Laplace operator
+\DeclareMathOperator{\metric}{\operatorname{d}}      % Metric
+\DeclareMathOperator{\re}{Re}                        % Real part
+\DeclareMathOperator{\rot}{rot}                      % Rotation/ curl
+\DeclareMathOperator{\tangent}{\operatorname{T}}     % Tangent space
+\DeclareMathOperator{\vol}{vol}                      % Volumetric integration
+\newcommand{\restr}[2]{\ensuremath{#1\big|_{#2}} }   % Restriction
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}      % Absolute value
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}     % Norm
+\newcommand{\support}[1][]{\operatorname{supp}_{#1}} % [Named] Support
+\newcommand{\vc}[1]{\mathbf{#1}}                     % Vector
+\newcommand{\weak}{\textsuperscript*}                % Weak decoration
+\newcommand{\ceiling}[1]{\lceil#1\rceil}             % Ceiling function
+\newcommand{\floor}[1]{\lfloor#1\rfloor}             % Floor function
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algebra {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\ev}{ev}
+\let\im\defaultim{}
+\DeclareMathOperator{\im}{im}
+
+% Span
+\newcommand{\spn}[1]{\ensuremath{\left\langle\,#1\,\right\rangle}}
+\DeclareMathOperator{\hull}{Span}
+\newcommand{\scalarprod}[2]{\ensuremath{\left\langle#1,#2\right\rangle}}
+
+\DeclareMathOperator{\Char}{char}                    % (Field) Characteristic
+\DeclareMathOperator{\Frac}{Frac}                    % Fraction field
+\DeclareMathOperator{\Gal}{Gal}                      % Galois group
+\DeclareMathOperator{\Obj}{Obj}                      % Object
+\DeclareMathOperator{\Orb}{Orb}                      % Orbit
+\DeclareMathOperator{\Stab}{Stab}                    % Stabiliser
+\DeclareMathOperator{\Sym}{Sym}                      % Symmetric
+\DeclareMathOperator{\coker}{coker}                  % Cokernel
+\DeclareMathOperator{\irr}{irr}                      % Irreducible polynomial
+\DeclareMathOperator{\jac}{Jac}                      % Jacobson Radical
+\DeclareMathOperator{\krulldim}{\dim_\mathrm{Krull}} % Krull dimension
+\DeclareMathOperator{\lcm}{lcm}                      % Lowest common denominator
+\DeclareMathOperator{\nil}{nil}                      % Nilradical
+\DeclareMathOperator{\rad}{rad}                      % Jacobson Radical
+\DeclareMathOperator{\sgn}{sgn}                      % Sign
+\DeclareMathOperator{\tor}{to}                       % Torsion
+
+\newcommand{\Bil}[1][]{\operatorname{Bil}_{#1}}                      % Bilinear maps
+\newcommand{\ann}[1][]{\operatorname{ann}_{#1}}                      % Annihilator
+\newcommand{\Ass}[1][]{\operatorname{Ass}_{#1}}                      % Associated prime
+\newcommand{\height}[1][]{\operatorname{ht}_{#1}}                    % Prime ideal height
+\newcommand{\trdeg}[1][]{\operatorname{trdeg}_{#1}}                  % Transcendence degree
+\newcommand{\tens}[1][]{\otimes_{\scriptscriptstyle{#1}} }           % Tensor product
+\newcommand{\Tens}[1][]{\mathbin{\otimes_{\scriptscriptstyle{#1}} }} % Tensor Product
+
+% Fractions
+% Dynamically decide whether to place elements in fraction above each other or
+% next to each other based on whether in display mode or not.
+% \let\defaultfrac\frac
+\newcommand{\newfrac}[2]{\mathchoice{\frac{#1}{#2}}{#1/#2}{#1/#2}{#1/#2}}
+\newcommand{\defaultfrac}[2]{\frac{#1}{#2}}
+
+% Quotients
+% Dynamically decide how much space should be left between operands and how much
+% they should be raised, based on whether in display mode or not.
+\newcommand{\quot}[2]{%
+  \mathchoice
+    {\raisemath{0.4ex}{#1} \big/ \raisemath{-0.4ex}{#2}}%
+    {\scalebox{0.9}{$\raisemath{0.1ex}{#1} / \raisemath{-0.3ex}{#2}$} }%
+    {#1/#2}%
+    {#1/#2}%
+}
+\newcommand{\q}[2]{\quot{#1}{#2}}
+
+% Class of representatives
+\newcommand{\cl}[1]{\overline{#1}}
+
+% Styled arrows
+% Overloaded \to for named arrow
+\renewcommand{\to}[1][]{\xrightarrow{#1}}
+
+% Injection/ into map
+% \newcommand{\into}[1][]{\xhookrightarrow{#1}}
+\newcommand{\into}[1][]{\xrightarrow{#1}}
+
+% Surjection/ onto map
+% \newcommand{\onto}[1][]{\xrightarrow{#1}\mathrel{\mkern-14mu}\rightarrow}
+\newcommand{\onto}[1][]{\xrightarrow{#1}}
+
+% Named homomorphisms
+\newcommand{\nHom}[4]{\Hom_{(#1-\mathrm{#2})} \left(#3,\, #4 \right)}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rings, Fields and Groups {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator{\A}{\mathbb{A}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\F}{\mathbb{F}}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\K}{\mathbb{K}}
+\DeclareMathOperator{\N}{\mathbb{N}}
+\let\P\defaultP
+\DeclareMathOperator{\P}{\mathbb{P}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\Rk}{\mathbb{R}^k}
+\DeclareMathOperator{\Rm}{\mathbb{R}^m}
+\DeclareMathOperator{\Rn}{\mathbb{R}^n}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Computing {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Problems
+\DeclareMathOperator{\SAT}{SAT}
+\DeclareMathOperator{\CLIQUE}{CLIQUE}
+
+% Time-complexity
+\DeclareMathOperator{\Time}{Time}
+\DeclareMathOperator{\TIME}{TIME}
+
+% Memory-complexity
+\DeclareMathOperator{\Space}{Space}
+\DeclareMathOperator{\SPACE}{SPACE}
+
+% Complexity classes
+\DeclareMathOperator{\PTIME}{P}
+\DeclareMathOperator{\NPTIME}{NP}
+\DeclareMathOperator{\DLOG}{DLOG}
+\DeclareMathOperator{\PSPACE}{PSPACE}
+\DeclareMathOperator{\EXPTIME}{EXPTIME}
+
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General Typesetting {{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\til}[1]{\widetilde{#1}}
+% }}} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

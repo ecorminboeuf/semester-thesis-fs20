@@ -1,20 +1,20 @@
-\documentclass{article}
+\documentclass[11pt, a4paper, oneside]{article}
 
-\usepackage{a4wide}
-\usepackage{fancyhdr}
+\input{preamble.tex}
+
 \usepackage{graphicx}
-\usepackage[ansinew]{inputenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{url}
+%\usepackage[ansinew]{inputenc}
 \usepackage[british]{babel}
-\usepackage{listings}
+
 \usepackage{xcolor}
 \usepackage[toc, page]{appendix}
 \usepackage[linesnumbered, ruled, vlined]{algorithm2e}
-\usepackage{hyperref}
 \usepackage{caption}
 \usepackage{subcaption}
+
+%% code input
+\usepackage{listingsutf8}
+\usepackage{color}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -42,24 +42,42 @@
 
 \lstset{style=mystyle}
 
-
-%%\usepackage{minted}
-
-
-\title{Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
-\author{Etienne Corminboeuf}
-\date{\today}
-
-\usepackage[left = 3cm, right = 3cm]{geometry}
-
 \begin{document}
+\pagenumbering{gobble}
 
-\maketitle
+\chead{Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
+
+\thispagestyle{empty}
+
+\begin{center}
+  A semester thesis written at the
+  \\
+  \textsc{Eidgen\"ossische Technische Hochschule Z\"urich}
+  \\
+  on the topic of
+  \\[0.5cm]
+  \rule{\linewidth}{0.5mm}
+  \\[0.4cm]
+  \Large
+  \textbf{Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
+  \normalsize
+  \\[0.1cm]
+  \rule{\linewidth}{0.5mm}
+  \\[0.5cm]
+  by \textbf{Etienne Corminboeuf}
+  \\
+  under supervision by
+  \\
+  \textsc{V. Gradinaru} and \textsc{O. Rietmann} in
+  \\
+  Zurich, July 2020.
+  \\[1.0cm]
+\end{center}
 
 \tableofcontents
 
 \section{Introduction} \label{sec:intro}
-In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced in the paper by Gradinaru and Rietmann and quickly recap the important elements. For a full derivation please consult \cite{paper_orvg}.
+In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced by Gradinaru and Rietmann in \defaultcite{GR18} and quickly recap the important elements. For a full derivation please consult \defaultcite{GR18}.
 \subsection{Mathematic model}
 
 In quantum mechanics, the time evolution of a particle subject to a magnetic field is given by the Pauli equation
@@ -69,69 +87,65 @@ In quantum mechanics, the time evolution of a particle subject to a magnetic fie
 \end{align}
 where $V_{ext}(x,t)$ is some external potential, $A_k(x,t)$ the k-th component of the magnetic vector potential $A(x,t)$ and $\phi(x,t)$ the electric potential.
 Because of the homogeneity of $B(t)$ the magnetic field 2-form $dA$ associated with $B(t)$ is independent of x and we can rewrite the magnetic vector potential to be
-\begin{equation}
+\begin{equation*}
   A(x,t) := \frac{1}{2}B_{jk}(t)x^j \textrm{d}x^k,
-\end{equation}
+\end{equation*}
 where $B(t)$ = $(B_{jk}(t))_{j,k = 1}^d$ is a real, skew-symmetric matrix. Using the operators
 \begin{align}
   L_{jk} & := x_j p_k - x_k p_j \\
   H_B(t) & := - \sum_{j,k = 1}^d B_{jk}(t) L_{jk}
 \end{align}
 the Pauli-Hamiltonian takes the form
-\begin{equation}
+\begin{equation*}
   H_P(t) = \frac{1}{2 m} \left(\hbar^{2}(-\Delta)-e \cdot \sum_{1 \leqslant j<k \leqslant d} B_{j k}(t) L_{j k} +\frac{e^{2}}{4}\|B(t) x\|_{\mathbb{R}^{d}}^{2}  \right) + e \phi(x,t) + V_{ext}(x,t).
-\end{equation}
+\end{equation*}
 
 \subsection{Numerical model}
-We introduce the scaled Plancks constant $\epsilon ^2 := \hbar$ and redefine $t$, $x$ and $B$ to find the simplified form
-\begin{equation}
+We introduce the scaled Planck constant $\epsilon ^2 := \hbar$ and redefine $t$, $x$ and $B$ to find the simplified form
+\begin{equation*}
   H_P(t) = -\Delta + H_B(t) + V(x,t)
-\end{equation}
+\end{equation*}
 where $V(x,t) := \frac{1}{2m}\frac{e^{2}}{4}\|B(t) x\|_{\mathbb{R}^{d}}^{2} + e \phi(x,t) + V_{ext}(x,t)$ can be considered to be a total effective potential.
 The Schr{\"o}dinger equation
-\begin{equation} \label{num_main} \tag{H}
+\begin{equation*} \label{num_main} \tag{H}
   i \epsilon ^2 \partial_t \Psi(x, t) = H_P(t)\Psi(x,t)
-\end{equation}
+\end{equation*}
 is then split up into three separate parts that can be solved numerically.
 \begin{align}
   i \epsilon^2 \partial_t \Psi &= -\Delta \Psi \label{num_kin} \tag{K}\\
   i \epsilon^2 \partial_t \Psi &= H_B(t) \Psi \label{num_M} \tag{M}\\
   i \epsilon^2 \partial_t \Psi &= V(x,t) \Psi \label{num_pot} \tag{P}
 \end{align}
-(\ref{num_kin}) can be solved discretely in Fourier-space and (\ref{num_pot}) by pointwise multiplication with $e^{-i/\epsilon ^2 \int_{t_0}^t dt V(x,t)}$. (\ref{num_M}) is reduced to the linear differential equation
+\cref{num_kin} can be solved discretely in Fourier-space and \cref{num_pot} by pointwise multiplication with $e^{-i/\epsilon ^2 \int_{t_0}^t dt V(x,t)}$. \cref{num_M} is reduced to the linear differential equation
 \begin{equation} \label{num_B} \tag{B}
   \frac{d}{dt}y(t) = B(t)y(t)
 \end{equation}
-\cite{simon_reed} proves the existence of a flow map $U(t,t_0)$ which is a solution to (\ref{num_B}). The unitary representation
+\defaultcite{SR75} proves the existence of a flow map $U(t,t_0)$ which is a solution to \cref{num_B}. The unitary representation
 \begin{align} \label{eq_rho}
   \rho : SO(d) &\longrightarrow U(L^2(\mathbb{R}^d)) \\
   R &\longmapsto (\rho (R)\Psi)(x) = \Psi(R^{-1} x)
 \end{align}
-maps the solution $U(t, t_0)$ of (\ref{num_B}) to a solution of (\ref{num_M}). The proof of this statement can be found in \cite{paper_orvg}. The exact flow map $U(t, t_0)$ can be approximated by the Magnus expansion proposed by Blanes and Moan \cite{magnus_integrators}.
-Direct calculation shows  $[-\Delta$, $H_B(t)] = 0$. Thus the flow maps solving (\ref{num_kin}) and (\ref{num_M}) yield a solution to the differential equation
+maps the solution $U(t, t_0)$ of \cref{num_B} to a solution of \cref{num_M}. The proof of this statement can be found in \defaultcite{GR18}. The exact flow map $U(t, t_0)$ can be approximated by the Magnus expansion proposed by Blanes and Moan \defaultcite{BM06}.
+Direct calculation shows  $[-\Delta$, $H_B(t)] = 0$. Thus the flow maps solving \cref{num_kin} and \cref{num_M} yield a solution to the differential equation
 \begin{equation} \label{num_K_M} \tag{K+M}
   i \epsilon ^2 \partial_t \Psi = (-\Delta + H_B(t))\Psi
 \end{equation}
-in the following way: Denote the solutions to (\ref{num_kin}) and (\ref{num_M}) by $\Phi_{-\Delta}$ and $\Phi_{H_B}$ respectively. This means that the flow map to (\ref{num_kin}) satisfies
-\begin{equation}
-  i \epsilon^2 \frac{\partial}{\partial t}\Phi_{-\Delta}(t, t_0) = -\Delta \Phi_{-\Delta}(t, t_0), \quad \Phi_{-\Delta}(t_0, t_0) = id,
-\end{equation}
-and analogously for the flow map to (\ref{num_M}). The flow map $\Phi_{-\Delta + H_B}$ which is a solution to (\ref{num_K_M}) then follows as a simple multiplication
-\begin{equation}
+in the following way: Denote the solutions to \cref{num_kin} and \cref{num_M} by $\Phi_{-\Delta}$ and $\Phi_{H_B}$ respectively. The flow map $\Phi_{-\Delta + H_B}$ which is a solution to \cref{num_K_M} then follows as a simple multiplication
+\begin{equation*}
   \Phi_{-\Delta + H_B}(t, t_0) = \Phi_{H_B}(t, t_0)\Phi_{-\Delta}(t, t_0) = \Phi_{-\Delta}(t, t_0)\Phi_{H_B}(t, t_0).
-\end{equation}
-Finally, combining the solutions to (\ref{num_K_M}) and (\ref{num_pot}) using a splitting scheme leads to a solution of \ref{num_main}.
+\end{equation*}
+Finally, combining the solutions to \cref{num_K_M} and \cref{num_pot} using a splitting scheme leads to a solution of \cref{num_main}.
 
 \subsection{Splitting}
 Consider a splitting scheme with the coefficients $(a_i, b_i)$ for $1 \leq i \leq n$ and the time grids
-\begin{equation}
+\begin{equation*}
   t_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} b_{j} \quad \text { and } \quad s_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} a_{j}
-\end{equation}
-to an initial time $t_0$. \cite{paper_orvg} derives an explicit expression of the solution to \ref{num_main} as follows:
-\begin{equation} \label{eq:timesteps}
-  \Phi_{H}\left(t_{0}+N h, t_{0}\right) \approx\left(\prod_{j=0}^{N-1} \prod_{i=0}^{n-1} \Phi_{-\Delta}\left(t_{i+1}, t_{i}\right) \Phi_{\rho\left(U\left(t_{0}+N h, t_{i}+j h\right)\right) V}\left(s_{i+1}+j h, s_{i}+j h\right)\right) \Phi_{H_{B}}\left(t_{0}+N h, t_{0}\right)
-\end{equation}
-where $h$ is the splitting time step, $\rho$ the representation defined in eq. \ref{eq_rho} and $U(t, t_0)$ the exact flow map to (\ref{num_B}). \newline
+\end{equation*}
+to an initial time $t_0$. \defaultcite{GR18} derives an explicit expression of the solution to \cref{num_main} as follows:
+\begin{multline} \label{eq:timesteps}
+  \Phi_{H}\left(t_{0}+N h, t_{0}\right) \approx \left(\prod_{j=0}^{N-1} \prod_{i=0}^{n-1} \Phi_{-\Delta}\left(t_{i+1}, t_{i}\right) \Phi_{\rho\left(U\left(t_{0}+N h, t_{i}+j h\right)\right) V}\left(s_{i+1}+j h, s_{i}+j h\right)\right) \\ \times \Phi_{H_{B}}\left(t_{0}+N h, t_{0}\right)
+\end{multline}
+where $h$ is the splitting time step, $\rho$ the representation defined in \cref{eq_rho} and $U(t, t_0)$ the exact flow map to \cref{num_B}. \newline
 To simplify the numerical calculations the propagator for the potential part $\Phi_{V} = \exp(-i \int_{t_0}^t V(x, s)ds)$ can be rewritten using the definition $V(x, t) = \lVert{B(t)x}\rVert_{\mathbb{R}^d}^2 + \phi(x,t) + V_{ext}(x,t)$ to
 \begin{equation} \label{eq:rotinv}
   \int_{t_0}^t V(x, s) ds = \left\langle x, \left( -\int _{t_0}^t B^2(s)ds\right)x \right\rangle + \int _{t_0}^t \left( \phi(x, s) + V_{ext}(x, s)  \right) ds.
@@ -139,18 +153,18 @@ To simplify the numerical calculations the propagator for the potential part $\P
 
 
 \section{Implementation}
-The considerations made above were implemented into the WaveBlocksND project, developed by Bourquin and Gradinaru \cite{waveblocksnd}. To that avail we created a new \emph{FourierMagneticPropagator}-class, based on the existing \emph{FourierPropagator}-class. The full class code can be found in Appendix \ref{appendix:code}.
-The \emph{FourierMagneticPropagator}-class carries the header portrayed in figure \ref{fig:doc_fmp}.
+We implemented the method described above into the WaveBlocksND project, developed by Bourquin and Gradinaru \defaultcite{waveblocksnd}. To that avail we created a new \emph{FourierMagneticPropagator}-class, based on the existing \emph{FourierPropagator}-class. The full class code can be found in Appendix \ref{appendix:code}.
+The \emph{FourierMagneticPropagator}-class carries the header portrayed in \cref{fig:doc_fmp}.
 \begin{figure}[h]
   \centering
   \includegraphics[width = 0.9\textwidth]{graphics/doc_fmp.PNG}
-  \caption{Documentation-Header of the FourierMagneticPropagator Class.}
+  \caption{Header of the FourierMagneticPropagator Class.}
   \label{fig:doc_fmp}
 \end{figure}
 
-In this section, we present the \emph{postpropagate}-function which carries the implementation of section \ref{sec:intro} and explain its approach. \newline
+In this section, we present the \emph{postpropagate}-function which carries the implementation of \cref{sec:intro} and explain its approach. \newline
 
-The code of the \emph{postpropagate}-function is summarised in Algorithm \ref{alg:postpropagate}. It is based on Algorithm 1 from \cite{paper_orvg}. Its header is visible in figure~\ref{fig:pp}.
+The code of the \emph{postpropagate}-function is summarised in Alg. (\ref{alg:postpropagate}). It is based on the algorithm from \defaultcite{GR18}. Its header is visible in \cref{fig:pp}.
 \begin{figure}[ht]
   \centering
   \includegraphics[width = 0.9 \textwidth]{graphics/doc_postpropagate.PNG}
@@ -158,8 +172,8 @@ The code of the \emph{postpropagate}-function is summarised in Algorithm \ref{al
   \label{fig:pp}
 \end{figure}
 
-The flow map $\rho$ from equation \ref{eq_rho} effectively acts as a rotation. These rotations could not directly be applied onto the potential $V$ or the wavefunction $\Psi$ but had to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ the above rotation needs to be reversed to return to the original state. Otherwise subsequent evaluations would be made on the wrong grid.\newline
-Because of the rotational invariance of the first term in equation \ref{eq:rotinv}, in the term $\Phi_{\rho(U(t_0 + Nh, t_i + jh))V}$ only the electric potential $\phi$ needs to be subjected to such a rotation. \newline
+The flow map $\rho$ from \cref{eq_rho} effectively acts as a rotation. These rotations could not directly be applied onto the potential $V$ or the wavefunction $\Psi$ but had to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ the above rotation needs to be reversed to return to the original state. Otherwise subsequent evaluations would be conducted on the wrong grid.\newline
+Because of the rotational invariance of the first term in \cref{eq:rotinv}, only the second term $\phi(x,s) + V_{ext}(x,s)$ needs to be subjected to such a rotation. \newline
 
 \begin{algorithm}[H]
   \label{alg:postpropagate}
@@ -168,14 +182,14 @@ Because of the rotational invariance of the first term in equation \ref{eq:rotin
     \BlankLine
 
     \KwData{\emph{As arguments to the function:} class instance $self$; end time $t$.\newline \emph{As arguments to the class instance:} step width $dt$; meshgrid $X$; initial wave function $\Psi_0$; potential $V$; magnetic field $B$; number of components of the wavefunction $N$; scaled Planck constant $\epsilon$; splitting method with coefficients $(a_i, b_i)_{i = 1}^n$; end time of simulation $T$; dimension $d$; frequency of writing to disk $w_n$.}
-    \KwResult{ Computes wavepacket at time $t$ and saves it to class member. \textbf{Returns:} End time $t$.}
+    \KwResult{ Computes wavepacket at time $t$ and saves it to class member. Returns End time $t$.}
 
     define stepwidth: $n_{steps}$ = $\lceil t / dt \rceil $\;
     define time grids: $t_a = t_0$, $t_b = t_0$ \;
     calculate flow map $R = U(t_0 + N\cdot dt, t_0)$ \;
     rotate the grid by $R^T$ \;
     evaluate initial data on rotated grid and save to wavefunction $\Psi$\;
-    rotate grid back \;
+    rotate grid by $R$ \;
 
     \For{j = 0 to nsteps}{
       \For{i = 0 to dim(a)}{
@@ -191,7 +205,7 @@ Because of the rotational invariance of the first term in equation \ref{eq:rotin
         kinetic propagator $\Phi_{-\Delta}$: \\
         {
           \Indp Fast-Fourier-Transform $\Psi$ to Fourier space \;
-          calculate the kinetic propagator $Phi_{-\Delta}$ \;
+          calculate the kinetic propagator $\Phi_{-\Delta}$ \;
           apply propagator to $\mathcal{FFT}(\Psi)$ \;
           Inverse-FFT $\Psi$ to real space \;
         }
@@ -204,15 +218,19 @@ Because of the rotational invariance of the first term in equation \ref{eq:rotin
 
 
 \section{Results}
-In order to investigate the results of the \emph{FourierMagneticPropagator}, we will present two examples and analyse several important metrics, mainly those of energy and norm conservation and convergence. Additionally, the time evolution is shown in appendix \ref{}
+In order to investigate the results of the \emph{FourierMagneticPropagator}, we will present two examples and analyse several important metrics, mainly those of energy conservation, norm conservation and convergence. Additionally, the time evolution is shown in appendix \ref{appendix:evolution}.
 
 \subsection{Example: Threefold Morse Potential}
 Consider the threefold morse potential for $x \in \mathbb{R}^2$:
-\begin{equation}
-  V_{ext}(x) = 8 \left(1 - \exp\left( - \frac{\lVert x \rVert _{\mathbb{R}^2}^2}{32}(1 - \cos(3arctan2(x_2, x_1)))^2\right)\right)^2.
-\end{equation}
-Consider the inital data $\Psi_0 = SOMETHING$ with the parameters from table \ref{tab:params}, step width $dt=0.01$, start time $t_0=0$, end time $T=5$ and the homogeneous, time-independent magnetic field $B = \begin{pmatrix} 0 & -0.5 \\ 0.5 & 0 \end{pmatrix}$. As the splitting method we chose Strang Splitting \cite{strang_splitting}.
-\begin{table}
+\begin{equation*}
+  V_{ext}(x) = 8 \left(1 - \exp\left( - \frac{\lVert x \rVert _{\mathbb{R}^2}^2}{32}(1 - \cos(3arctan2(x_2, x_1)))^2\right)\right)^2
+\end{equation*}
+and the inital data
+\begin{equation*}
+  \Psi_0^{\epsilon}[q, p, Q, P] = \left( \pi \epsilon^2 Q^2 \right)^{-\frac{1}{4}} \exp \left( \frac{i}{2\epsilon^2} PQ^{-1}(x-q)^2 + \frac{i}{\epsilon^2}p(x-q) \right)
+\end{equation*}
+ with the parameters from \cref{tab:params}. Note that this corresponds to a wavefunction concentrated in position around $q$ and in momentum around $p$ with uncertainties $\epsilon \lvert Q \rvert / \sqrt{2}$ and $\epsilon \lvert P \rvert / \sqrt{2}$. Additionally consider the step width $dt=0.01$, start time $t_0=0$, end time $T=5$ and the homogeneous, time-independent magnetic field $B = \begin{pmatrix} 0 & -0.5 \\ 0.5 & 0 \end{pmatrix}$. As the splitting method we chose Strang Splitting \defaultcite{G68}.
+\begin{table}[h]
   \centering
   \begin{tabular}{c|c}
     q & $\begin{pmatrix}1.0 & 0.0 \end{pmatrix}$ \\ \hline
@@ -233,7 +251,7 @@ Consider the inital data $\Psi_0 = SOMETHING$ with the parameters from table \re
 \end{table}
 
 \subsubsection{Energy and Norm conservation}
-The evolution of the energies is visible in figure \ref{fig:threefold_energy}, the evolution of the norms in figure \ref{fig:threefold_norm}. We found that both energies and norms are approximately constant.
+The evolution of the energies is visible in \cref{fig:threefold_energy}, the evolution of the norms in \cref{fig:threefold_norm}. We found that both energies and norms are approximately constant.
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_energies_block0.PNG}
@@ -248,7 +266,7 @@ The evolution of the energies is visible in figure \ref{fig:threefold_energy}, t
   \label{fig:threefold_energy}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/norms_block0.PNG}
     \caption{Norm evolution.}
@@ -263,21 +281,21 @@ The evolution of the energies is visible in figure \ref{fig:threefold_energy}, t
 \end{figure}
 
 \subsubsection{Resource Consumption}
-We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 with 24 Cores and recorded the resource consumption using Linux' pidstat and time commands. The simulation lasted a total of 5:50:44 (h:min:s) consuming on average $1068 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in figure \ref{fig:threefold_resource}.
-\begin{figure}[H]
+We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 with 24 Cores and recorded the resource consumption using Linux' pidstat and time commands. The simulation lasted a total of 5:50:44 (h:min:s) consuming on average $1068 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:threefold_resource}.
+\begin{figure}[h]
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_perCPU.pdf}
-    \caption{Percentage of CPU used by the simulation.}
+    \caption{Percentage of CPU.}
   \end{subfigure}
   ~
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_RSS.pdf}
-    \caption{Amount of RSS (Resident Set Size) used by the simulation.}
+    \caption{RSS (Resident Set Size).}
   \end{subfigure}
   ~
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_VSZ.pdf}
-    \caption{Amount of VSZ (Virtual Memory Size) used by the simulation.}
+    \caption{VSZ (Virtual Memory Size).}
   \end{subfigure}
   \caption{Resource consumption of the simulation with the threefold morse potential.}
   \label{fig:threefold_resource}
@@ -287,17 +305,16 @@ We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 w
 
 
 \subsection{Example: Torsional Potential}
-Consider the torsional potential from \cite{torsional} for $x \in \mathbb{R}^2$:
-\begin{equation}
+Consider the torsional potential from \defaultcite{FGL09} for $x \in \mathbb{R}^2$:
+\begin{equation*}
   V_{ext}(x) = \sum_{i=1}^2 1 - \cos(x_i).
-\end{equation}
-//applications of this potential? \newline
-Consider $\Psi_0$ to be as in the example above with the parameters from table \ref{tab:params} and the splitting to be Strang Splitting.
+\end{equation*}
+Consider $\Psi_0$ to be as in the example above with the parameters from \cref{tab:params} and the splitting to be Strang Splitting.
 
 \subsubsection{Energy and Norm conservation}
-The energy and norm evolution over time is depicted in figures \ref{fig:cos_energy} and \ref{fig:cos_norm} respectively.
+The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and \cref{fig:cos_norm} respectively.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/torsional/energies_block0.PNG}
     \caption{Energy evolution.}
@@ -311,24 +328,38 @@ The energy and norm evolution over time is depicted in figures \ref{fig:cos_ener
   \label{fig:cos_energy}
 \end{figure}
 
+\begin{figure}[h]
+  \begin{subfigure}[b]{0.45 \textwidth}
+    \includegraphics[width = \textwidth]{graphics/torsional/norms_block0.PNG}
+    \caption{Norm evolution.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45 \textwidth}
+    \includegraphics[width = \textwidth]{graphics/torsional/norms_drift_block0_log.PNG}
+    \caption{Norm drift evolution.}
+  \end{subfigure}
+  \caption{Norm and norm drift.}
+  \label{fig:cos_norm}
+\end{figure}
+
 \subsubsection{Time Evolution}
 
 \subsubsection{Resource Consumption}
-We ran the simulation on a setup identical to the one mentioned above and again recorded the resource consumpion using Linux' time and pidstat commands. The simulation lasted for a total of 7:45:18 (h:min:s) and consumed $247 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in figure \ref{fig:cos_resource}.
-\begin{figure}[H]
+We ran the simulation on a setup identical to the one mentioned above and again recorded the resource consumpion using Linux' time and pidstat commands. The simulation lasted for a total of 7:45:18 (h:min:s) and consumed $247 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:cos_resource}.
+\begin{figure}[h]
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_perCPU.pdf}
-    \caption{Percentage of CPU used by the simulation.}
+    \caption{Percentage of CPU.}
   \end{subfigure}
   ~
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_RSS.pdf}
-    \caption{Amount of RSS (Resident Set Size) used by the simulation.}
+    \caption{RSS (Resident Set Size).}
   \end{subfigure}
   ~
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_VSZ.pdf}
-    \caption{Amount of VSZ (Virutal Memory Size) used by the simulation.}
+    \caption{VSZ (Virtual Memory Size).}
   \end{subfigure}
   \caption{Resource consumption of the simulation with the torsional potential. The difference in CPU percentage between the torsional potential and the morse potential is mostly due to different loads on the machines at the time of simulation.}
   \label{fig:cos_resource}
@@ -345,37 +376,18 @@ We ran the simulation on a setup identical to the one mentioned above and again 
 
 
 \section{Code} \label{appendix:code}
-    \lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2
-}
-
-\lstset{style=mystyle}
 
 %%\inputminted{python}{../FourierMagneticPropagator.py}
 
 %% make sure to refresh this at the end
+
 \lstinputlisting[language=Python]{../FourierMagneticPropagator.py}
 
 %%\input{../FourierLatex}
 
 \section{Time evolution} \label{appendix:evolution}
 \subsection{Threefold Morse Potential}
-The time evolution of the wavepacket $\Psi$ is portrayed in figure \ref{fig:threefold_time}. At a position $x$ the color encodes the phase of $\Psi(x)$, the brightness of the pixel encodes the intensity $\lvert \Psi(x) \rvert$.
+The time evolution of the wavepacket $\Psi$ is portrayed in \cref{fig:threefold_time}. At a position $x$ the color encodes the phase of $\Psi(x)$, the brightness of the pixel encodes the intensity $\lvert \Psi(x) \rvert$.
 \begin{figure}[h]
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/wavefunction_contour_block_0_level_0_timestep_0000000.PNG}
@@ -405,7 +417,7 @@ The time evolution of the wavepacket $\Psi$ is portrayed in figure \ref{fig:thre
 \end{figure}
 
 \subsection{Torsional Potential}
-The time evolution of the wavepacket $\Psi$ is portrayed in figure \ref{fig:torsional_time}. At a position $x$ the color encodes the phase of $\Psi(x)$, the brightness of the pixel encodes the intensity $\lvert \Psi(x) \rvert$.
+The time evolution of the wavepacket $\Psi$ is portrayed in \cref{fig:torsional_time}. At a position $x$ the color encodes the phase of $\Psi(x)$, the brightness of the pixel encodes the intensity $\lvert \Psi(x) \rvert$.
 \begin{figure}[h]
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000000.PNG}
@@ -436,35 +448,11 @@ The time evolution of the wavepacket $\Psi$ is portrayed in figure \ref{fig:tors
 
 \end{appendices}
 
+\newpage
+\pagenumbering{gobble}
+%\bibliographystyle{apalike}
+\bibliographystyle{plain}
+\bibliography{bibliography/references}
 
-\begin{thebibliography}{9}
-\bibitem{paper_orvg}
-  V. Gradinaru and O. Rietmann.
-  \emph{A High-Order Integrator for the
-          Schr{\"o}dinger Equation with Time-Dependent,
-          Homogeneous Magnetic Field}.
-  Unpublished article, ETH Z{\"u}rich, submitted for publication, 2020.
-\bibitem{simon_reed}
-  B. Simon and M. Reed.
-  \emph{Fourier Analysis, Self-Adjointness, Volume 2} of \emph{Methods of Modern Mathematical Physics}.
-  Academic Press, Boston, 1975.
-\bibitem{magnus_integrators}
-  S. Blanes and P.C. Moan.
-  \emph{Fourth- and sixth-order commutator-free Magnus integrators for linear and non-linear dynamical systems}.
-  Applied Numerical Mathematics, 56(12):1519 - 1537, 2006.
-\bibitem{waveblocksnd}
-  R. Bourquin and V. Gradinaru.
-  \emph{{WaveBlocks}: Reusable building blocks for simulations with semiclassical wavepackets},
-  GitHub, URL: \url{https://github.com/WaveBlocks/WaveBlocksND},
-  2010 - 2016.
-\bibitem{torsional}
-  E. Faou, V. Gradinaru and C. Lubich.
-  \emph{Computing semiclassical quantum dynamics with Hagedorn wavepackets},
-  SIAM J. Scientific Computing, 31:3027-3041, 01, 2009.
-\bibitem{strang_splitting}
-  G. Strang.
-  \emph{On the construction and comparison of difference schemes},
-  SIAM Journal on Numerical Analysis, 5:506-517, 1968.
-\end{thebibliography}
 
 \end{document}
