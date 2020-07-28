@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex semester_thesis_report"] 1595233407 "semester_thesis_report.aux" "semester_thesis_report.bbl" "semester_thesis_report" 1595233413
+["bibtex semester_thesis_report"] 1595860575 "semester_thesis_report.aux" "semester_thesis_report.bbl" "semester_thesis_report" 1595860583
   "bibliography/references.bib" 1595007364 1754 2a7764a4b2ca19f127598e5729500e3d ""
   "c:/texlive/2018/texmf-dist/bibtex/bst/base/plain.bst" 1538821761 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "semester_thesis_report.aux" 1595233412 9304 55404563acaa6a99359e825385d621fe ""
+  "semester_thesis_report.aux" 1595860581 9214 3ab241868cd9fd754567023c323ae928 ""
   (generated)
   "semester_thesis_report.bbl"
   "semester_thesis_report.blg"
-["pdflatex"] 1595233408 "semester_thesis_report.tex" "semester_thesis_report.pdf" "semester_thesis_report" 1595233413
+["pdflatex"] 1595860576 "semester_thesis_report.tex" "semester_thesis_report.pdf" "semester_thesis_report" 1595860583
   "../FourierMagneticPropagator.py" 1593879866 11811 df74f765d2216975c23404c61c0ff316 ""
   "../parser/cospot_RSS.pdf" 1594197482 29659 4b7ac3f28832afa138370e339eeb1674 ""
   "../parser/cospot_VSZ.pdf" 1594197482 25712 5963fbef6d7faf8c3319233161c233a0 ""
@@ -273,15 +273,15 @@
   "graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000400.png" 1594047743 25350 2b7343d2ed5759024b1119da02ae6860 ""
   "graphics/torsional/wavefunction_contour_block_0_level_0_timestep_0000500.png" 1594047756 30754 5c3f1e2c7e4e8976f372c60ffe65d393 ""
   "nul" 0 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "preamble.tex" 1594993882 19824 22a6a943832c008d928f3afbd1652883 ""
-  "semester_thesis_report.aux" 1595233412 9304 55404563acaa6a99359e825385d621fe ""
-  "semester_thesis_report.bbl" 1595233408 1207 a4929f649723b031c850a8765280f113 "bibtex semester_thesis_report"
-  "semester_thesis_report.out" 1595233412 1392 8dc2096db279d2d9aa52097b64a9b6b2 ""
-  "semester_thesis_report.tex" 1595233400 22155 82cb9709662bc433d1ea5bd83e36e514 ""
-  "semester_thesis_report.toc" 1595233412 1725 9bdae54adc01aad850acba81ce8e9afa ""
+  "preamble.tex" 1595860102 19824 22a6a943832c008d928f3afbd1652883 ""
+  "semester_thesis_report.aux" 1595860581 9214 3ab241868cd9fd754567023c323ae928 ""
+  "semester_thesis_report.bbl" 1595860576 1207 a4929f649723b031c850a8765280f113 "bibtex semester_thesis_report"
+  "semester_thesis_report.out" 1595860581 1318 b307a0256221c52a23ea71911a2376d9 ""
+  "semester_thesis_report.tex" 1595860567 22231 b6b226f005fce3ecb61d8db61bd1a07c ""
+  "semester_thesis_report.toc" 1595860581 1637 cfc48922e6d4db3638043351d3fefb2f ""
   (generated)
-  "semester_thesis_report.toc"
   "semester_thesis_report.log"
   "semester_thesis_report.out"
-  "semester_thesis_report.aux"
+  "semester_thesis_report.toc"
   "semester_thesis_report.pdf"
+  "semester_thesis_report.aux"

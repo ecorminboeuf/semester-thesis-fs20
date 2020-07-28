@@ -45,7 +45,7 @@
 \begin{document}
 \pagenumbering{gobble}
 
-\chead{Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
+\chead{Implementation of a Method solving the Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
 
 \thispagestyle{empty}
 
@@ -59,7 +59,7 @@
   \rule{\linewidth}{0.5mm}
   \\[0.4cm]
   \Large
-  \textbf{Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
+  \textbf{Implementation of a Method solving the Time-Dependent Schr{\"o}dinger Equation with Magnetic Field}
   \normalsize
   \\[0.1cm]
   \rule{\linewidth}{0.5mm}
@@ -68,16 +68,20 @@
   \\
   under supervision by
   \\
-  \textsc{V. Gradinaru} and \textsc{O. Rietmann} in
+  \textsc{Dr. V. Gradinaru} and \textsc{O. Rietmann} in
   \\
   Zurich, July 2020.
   \\[1.0cm]
 \end{center}
 
+\newpage
+
 \tableofcontents
 
+\newpage
+
 \section{Introduction} \label{sec:intro}
-In this report we consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced by Gradinaru and Rietmann in \defaultcite{GR18} and quickly recap the important elements. For a full derivation please consult \defaultcite{GR18}.
+We consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced by Gradinaru and Rietmann in \defaultcite{GR18} and quickly recap the important elements. For a full derivation please consult \defaultcite{GR18}.
 \subsection{Mathematic model}
 
 In quantum mechanics, the time evolution of a particle subject to a magnetic field is given by the Pauli equation
@@ -282,7 +286,7 @@ The evolution of the energies is visible in \cref{fig:threefold_energy}, the evo
 
 \subsubsection{Resource Consumption}
 We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 with 24 Cores and recorded the resource consumption using Linux' pidstat and time commands. The simulation lasted a total of 5:50:44 (h:min:s) consuming on average $1068 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:threefold_resource}.
-\begin{figure}[h]
+\begin{figure}[h!]
   \begin{subfigure}[b]{0.5 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_perCPU.pdf}
     \caption{Percentage of CPU.}
@@ -309,7 +313,7 @@ Consider the torsional potential from \defaultcite{FGL09} for $x \in \mathbb{R}^
 \begin{equation*}
   V_{ext}(x) = \sum_{i=1}^2 1 - \cos(x_i).
 \end{equation*}
-Consider $\Psi_0$ to be as in the example above with the parameters from \cref{tab:params} and the splitting to be Strang Splitting.
+Consider $\Psi_0$ to be as in the example above with the parameters from \cref{tab:params} and the splitting to be Strang Splitting \defaultcite{G68}.
 
 \subsubsection{Energy and Norm conservation}
 The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and \cref{fig:cos_norm} respectively.
@@ -341,8 +345,6 @@ The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and
   \caption{Norm and norm drift.}
   \label{fig:cos_norm}
 \end{figure}
-
-\subsubsection{Time Evolution}
 
 \subsubsection{Resource Consumption}
 We ran the simulation on a setup identical to the one mentioned above and again recorded the resource consumpion using Linux' time and pidstat commands. The simulation lasted for a total of 7:45:18 (h:min:s) and consumed $247 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:cos_resource}.
