@@ -246,58 +246,52 @@ and the inital data
     P & $\begin{pmatrix}
       i/\sqrt{2.0 \cdot 0.56} & 0.0 \\
       0.0 & i/\sqrt{2.0 \cdot 0.24}
-    \end{pmatrix}$ \\ \hline
-    S & (0.0) \\
+    \end{pmatrix}$ \\
   \end{tabular}
   \caption{Parameters for the initial wavepacket $\Psi_0$.}
   \label{tab:params}
 
 \end{table}
-
+The scaled Planck's constant was set to $\epsilon = 0.25$.
 \subsubsection{Energy and Norm conservation}
 The evolution of the energies is visible in \cref{fig:threefold_energy}, the evolution of the norms in \cref{fig:threefold_norm}. We found that both energies and norms are approximately constant.
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_energies_block0.PNG}
-    \caption{Energy evolution.}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/energy_drift_block0_log.PNG}
-    \caption{Energy drift evolution.}
   \end{subfigure}
-  \caption{Energy and energy drift.}
+  \caption{Energy and energy drift, $\epsilon = 0.25$.}
   \label{fig:threefold_energy}
 \end{figure}
 
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/norms_block0.PNG}
-    \caption{Norm evolution.}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/norms_drift_block0_log.PNG}
-    \caption{Norm drift evolution.}
   \end{subfigure}
-  \caption{Norm and norm drift.}
+  \caption{Norm and norm drift, $\epsilon = 0.25$.}
   \label{fig:threefold_norm}
 \end{figure}
 
-\subsubsection{Resource Consumption}
-We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 with 24 Cores and recorded the resource consumption using Linux' pidstat and time commands. The simulation lasted a total of 5:50:44 (h:min:s) consuming on average $1068 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:threefold_resource}.
 \begin{figure}[h!]
-  \begin{subfigure}[b]{0.5 \textwidth}
+  \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_perCPU.pdf}
     \caption{Percentage of CPU.}
   \end{subfigure}
   ~
-  \begin{subfigure}[b]{0.5 \textwidth}
+  \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_RSS.pdf}
     \caption{RSS (Resident Set Size).}
   \end{subfigure}
   ~
-  \begin{subfigure}[b]{0.5 \textwidth}
+  \begin{subfigure}[b]{0.45 \textwidth}
+    \centering
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_VSZ.pdf}
     \caption{VSZ (Virtual Memory Size).}
   \end{subfigure}
@@ -305,15 +299,25 @@ We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 w
   \label{fig:threefold_resource}
 \end{figure}
 
-\subsubsection{Convergence}
+\subsubsection{Resource Consumption}
+We ran the simulation on a CPU consisting of 2x AMD Opteron(tm) Processor 6174 with 24 Cores and recorded the resource consumption using Linux' pidstat and time commands. The simulation lasted a total of 5:50:44 (h:min:s) consuming on average $1068 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:threefold_resource}.
 
+
+\subsubsection{Convergence} \label{sec:threefold_conv}
+To determine performance for different $\epsilon$, we ran a reference simulation using a splitting of order 6 proposed by Blanes and Moan \defaultcite{BLANES2002313} and a sample simulation using Strang splitting \defaultcite{G68}, which is of order 2. The difference of those simulations for several values of $\epsilon$ is portrayed in \cref{fig:convthreefold}.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width = 110mm]{../../convergence/threefold/coeffdiff.png}
+  \caption{Error of the coefficient vectors for different $\epsilon$.}
+  \label{fig:convthreefold}
+\end{figure}
 
 \subsection{Example: Torsional Potential}
 Consider the torsional potential from \defaultcite{FGL09} for $x \in \mathbb{R}^2$:
 \begin{equation*}
   V_{ext}(x) = \sum_{i=1}^2 1 - \cos(x_i).
 \end{equation*}
-Consider $\Psi_0$ to be as in the example above with the parameters from \cref{tab:params} and the splitting to be Strang Splitting \defaultcite{G68}.
+Consider $\Psi_0$ to be as in the example above with the parameters from \cref{tab:params}, $\epsilon = 0.25$ and the splitting to be Strang Splitting \defaultcite{G68}.
 
 \subsubsection{Energy and Norm conservation}
 The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and \cref{fig:cos_norm} respectively.
@@ -321,45 +325,42 @@ The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/torsional/energies_block0.PNG}
-    \caption{Energy evolution.}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/torsional/energy_drift_block0_log.PNG}
-    \caption{Energy drift evolution.}
   \end{subfigure}
-  \caption{Energy and energy drift.}
+  \caption{Energy and energy drift, $\epsilon = 0.25$.}
   \label{fig:cos_energy}
 \end{figure}
 
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/torsional/norms_block0.PNG}
-    \caption{Norm evolution.}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/torsional/norms_drift_block0_log.PNG}
-    \caption{Norm drift evolution.}
   \end{subfigure}
-  \caption{Norm and norm drift.}
+  \caption{Norm and norm drift, $\epsilon = 0.25$.}
   \label{fig:cos_norm}
 \end{figure}
+
 
 \subsubsection{Resource Consumption}
 We ran the simulation on a setup identical to the one mentioned above and again recorded the resource consumpion using Linux' time and pidstat commands. The simulation lasted for a total of 7:45:18 (h:min:s) and consumed $247 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:cos_resource}.
 \begin{figure}[h]
-  \begin{subfigure}[b]{0.5 \textwidth}
+  \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_perCPU.pdf}
     \caption{Percentage of CPU.}
   \end{subfigure}
   ~
-  \begin{subfigure}[b]{0.5 \textwidth}
+  \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_RSS.pdf}
     \caption{RSS (Resident Set Size).}
   \end{subfigure}
   ~
-  \begin{subfigure}[b]{0.5 \textwidth}
+  \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_VSZ.pdf}
     \caption{VSZ (Virtual Memory Size).}
   \end{subfigure}
@@ -369,10 +370,21 @@ We ran the simulation on a setup identical to the one mentioned above and again 
 
 
 \subsubsection{Convergence}
+The same considerations as in \cref{sec:threefold_conv} were made for the torsional potential. The difference of those simulations for various values of $\epsilon$ is portrayed in \cref{fig:convtorsional}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width = 110mm]{../../convergence/torsional/coeffdiff.png}
+  \caption{Error of the coefficient vectors for different $\epsilon$.}
+  \label{fig:convtorsional}
+\end{figure}
 
+\section{Discussion and Conclusion}
+In the course of this semester thesis, we implemented the method developed by Rietmann and Gradinaru in \defaultcite{GR18} into the WaveblocksND framework. We found that energies and norms are conserved well in both of the cases we explored.
+From \cref{fig:convthreefold} and \cref{fig:convtorsional} we can conclude that the method is well suited for values of $\epsilon > 0.125$, but is prone to much larger errors for values of $\epsilon$ smaller than that.\newline
+One major disadvantage of this method is its speed. Simulations are time- and resource intensive. Additionally the structure of the method results in the fact that time-steps are not consecutive but have to be calculated individually. I.e. to write data to the disk after the 10th and 20th time step (for example to calculate the energy at those times) the simulation needs to run the first 10 time-steps, write to disk, restart at $t_0$ and run the first 20 time-steps. This doesn't present itself as a problem when only the state at a certain end-time $T$ is needed but quickly becomes costly if a high resolution in the time-steps is required.
 
+For further research, one could investigate the performance of this method for a particle in a time-dependent magnetic field as well as in dimensions $d > 2$. Additionally performance could be compared to the semi-classical wavepacket approach from \defaultcite{FGL09} also implemented in WaveBlocksND.
 
-\section{Summary and Conclusion}
 
 \begin{appendices}
 
