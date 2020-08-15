@@ -129,7 +129,7 @@ The equation (\ref{num_kin}) can be solved discretely in Fourier-space. The solu
 \begin{equation} \label{num_B} \tag{B}
   \frac{d}{dt}y(t) = B(t)y(t)
 \end{equation}
-Consider the flow map $U(t,t_0)$ associated to (\ref{num_B}). The unitary representation
+Consider the flow map $U(t,t_0)$ associated with (\ref{num_B}). The unitary representation
 \begin{align} \label{eq_rho}
   \rho : SO(d) &\longrightarrow U(L^2(\mathbb{R}^d)) \\
   R &\longmapsto (\rho (R)\Psi)(x) = \Psi(R^{-1} x)
@@ -169,7 +169,8 @@ The \emph{FourierMagneticPropagator}-class carries the header visible below.
   \includegraphics[width = 0.9\textwidth]{graphics/doc_fmp.PNG}
 \end{figure}
 
-In this section, we present the \emph{postpropagate}-function which carries the implementation of \cref{sec:intro} and explain its approach. Note that using the \emph{postpropagate}-function to simulate the time evolution contrasts with the other time propagation algorithms implemented in WaveBlocksND which make use of the \emph{propagate}-function. This difference is due to the structure of our method. WaveBlocksND calls the \emph{propagate}-function for every time step, the \emph{postpropagate}-function on the other hand only when data is actually saved to disk. This happens at specified times, for example after a given time interval $\Delta t = n\cdot dt$. The \emph{FourierMagneticPropagator} does not allow intermediate results to be used to develop the simulation further, rather it requires a complete simulation from start time $t_0$ to the desired time $t_0 + k\cdot \Delta t$ for some $k\in \mathbb{N}$.
+In this section, we present the \emph{postpropagate}-function which carries the implementation of \cref{sec:intro} and explain its approach. \newline
+Note that using the \emph{postpropagate}-function to simulate the time evolution contrasts with the other time propagation algorithms implemented in WaveBlocksND which make use of the \emph{propagate}-function. This difference is due to the structure of our method. WaveBlocksND calls the \emph{propagate}-function for every time step, the \emph{postpropagate}-function on the other hand only when data is actually saved to disk. This happens at specified times, for example after a given time interval $\Delta t = n\cdot dt$. The \emph{FourierMagneticPropagator} does not allow intermediate results to be used to develop the simulation further, rather it requires a complete simulation from start time $t_0$ to the desired time $t_0 + k\cdot \Delta t$ for some $k\in \mathbb{N}$.
 The \emph{propagate}-function cannot be adapted to fulfill this requirement, thus the \emph{postpropagate}-function has to be used.\newline
 The code of the \emph{postpropagate}-function is summarised in Alg. (\ref{alg:postpropagate}). It is based on the algorithm from \defaultcite{GR18}. Its header is visible below.
 \begin{figure}[ht]
@@ -177,7 +178,7 @@ The code of the \emph{postpropagate}-function is summarised in Alg. (\ref{alg:po
   \includegraphics[width = 0.9 \textwidth]{graphics/doc_postpropagate.PNG}
 \end{figure}
 
-A few additional remarks to Alg. \ref{alg:postpropagate}: The flow map $\rho$ from \cref{eq_rho} effectively acts as a rotation. These rotations can not be applied directly onto the potential $V$ or the wavefunction $\Psi$ but has to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ the above rotation needs to be reversed in order to return to the original state. Otherwise subsequent evaluations would be conducted on the wrong grid.\newline
+A few additional remarks to Alg. \ref{alg:postpropagate}: The flow map $\rho$ from \cref{eq_rho} effectively acts as a rotation. This rotation cannot be applied directly onto the potential $V$ or the wavefunction $\Psi$ but has to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ the above rotation needs to be reversed in order to return to the original state. Otherwise subsequent evaluations would be conducted on the wrong grid.\newline
 Because of the rotational invariance of the first term in \cref{eq:rotinv}, only the second term $\phi(x,s) + V_{ext}(x,s)$ needs to be subjected to such a rotation. \newline
 
 \begin{algorithm}[H]
@@ -243,7 +244,7 @@ and the inital data
    \label{fig:initwf}
  \end{figure}
 
- Note that this corresponds to a wavefunction concentrated in position around $q$ and in momentum around $p$ with uncertainties $\epsilon \lvert Q \rvert / \sqrt{2}$ and $\epsilon \lvert P \rvert / \sqrt{2}$. Additionally consider the step width $dt=0.01$, start time $t_0=0$, end time $T=5$ and the homogeneous, time-independent magnetic field $B = \begin{pmatrix} 0 & -0.5 \\ 0.5 & 0 \end{pmatrix}$. As splitting method we chose Strang Splitting \defaultcite{G68}. We set $\epsilon = 0.25$. The simulation data is sampled on a spatial grid with $1024 \times 1024$ nodes that cover the simulation domain.
+ Note that this corresponds to a wavefunction concentrated in position around $q$ and in momentum around $p$ with uncertainties $\epsilon \lvert Q \rvert / \sqrt{2}$ and $\epsilon \lvert P \rvert / \sqrt{2}$. Additionally consider the step width $dt=0.01$, start time $t_0=0$, end time $T=5$ and the homogeneous, time-independent magnetic field $B = \begin{pmatrix} 0 & -0.5 \\ 0.5 & 0 \end{pmatrix}$. As splitting method we chose Strang Splitting \defaultcite{G68}. We set $\epsilon = 0.25$. The simulation data is sampled on a spatial grid with $1024 \times 1024$ nodes that cover the simulation domain, implemented as a meshgrid from python's numpy package.
 \begin{table}[h]
   \centering
   \begin{tabular}{c|c}
