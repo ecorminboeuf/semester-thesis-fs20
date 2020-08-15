@@ -56,7 +56,7 @@
   \\
   \textsc{Eidgen\"ossische Technische Hochschule Z\"urich}
   \\
-  on the topic of
+  on the
   \\[0.5cm]
   \rule{\linewidth}{0.5mm}
   \\[0.4cm]
@@ -86,8 +86,8 @@
 \setcounter{page}{1}
 
 \section{Introduction} \label{sec:intro}
-We consider a spinless particle in $\mathbb{R}^d$ with mass $m \in \mathbb{R}_{\geq 0}$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced by Gradinaru and Rietmann in \defaultcite{GR18} and quickly recap the important elements. For a full derivation please consult \defaultcite{GR18}.
-\subsection{Mathematic model}
+We consider a spinless particle in $\mathbb{R}^d$ with mass $m > 0$ and charge $e\in \mathbb{R}$ in a homogeneous magnetic field $B(t)$. We follow the notation introduced by Gradinaru and Rietmann in \defaultcite{GR18} and quickly recap the important elements. For a full derivation please consult \defaultcite{GR18}.
+\subsection{Mathematical model}
 
 In quantum mechanics, the time evolution of a particle subject to a magnetic field is given by the Pauli equation
 \begin{align} \label{eq_pauli}
@@ -95,7 +95,7 @@ In quantum mechanics, the time evolution of a particle subject to a magnetic fie
   H_P(t) :&= \frac{1}{2m} \sum_{k=1}^d (p_k - e A_k(x,t))^2 + e\phi(x,t) + V_{ext}(x,t)
 \end{align}
 where $V_{ext}(x,t)$ is some external potential, $A_k(x,t)$ the k-th component of the magnetic vector potential $A(x,t)$ and $\phi(x,t)$ the electric potential.
-Because of the homogeneity of $B(t)$ the magnetic field 2-form $dA$ associated with $B(t)$ is independent of x and we can rewrite the magnetic vector potential to be
+Because of the homogenity of the magnetic field $B(t)$, the 2-form $dA$ associated with $B(t)$ is independent of x and we can rewrite the magnetic vector potential as
 \begin{equation*}
   A(x,t) := \frac{1}{2}B_{jk}(t)x^j \textrm{d}x^k,
 \end{equation*}
@@ -110,7 +110,7 @@ the Pauli-Hamiltonian takes the form
 \end{equation*}
 
 \subsection{Numerical model}
-We introduce the scaled Planck constant $\epsilon ^2 := \hbar$ and redefine $t$, $x$ and $B$ to find the simplified form
+We use the notation $\epsilon ^2 := \hbar$ and redefine $t$, $x$ and $B$ to find the simplified form
 \begin{equation*}
   H_P(t) = -\Delta + H_B(t) + V(x,t)
 \end{equation*}
@@ -119,43 +119,43 @@ The Schr{\"o}dinger equation
 \begin{equation*} \label{num_main} \tag{H}
   i \epsilon ^2 \partial_t \Psi(x, t) = H_P(t)\Psi(x,t)
 \end{equation*}
-is then split up into three separate parts that can be solved numerically.
+is then split up into the following three separate parts that can easily be solved numerically:
 \begin{align}
-  i \epsilon^2 \partial_t \Psi &= -\Delta \Psi \label{num_kin} \tag{K}\\
-  i \epsilon^2 \partial_t \Psi &= H_B(t) \Psi \label{num_M} \tag{M}\\
-  i \epsilon^2 \partial_t \Psi &= V(x,t) \Psi \label{num_pot} \tag{P}
+  i \epsilon^2 \partial_t \Psi &= -\Delta \Psi \label{num_kin} \tag{K},\\
+  i \epsilon^2 \partial_t \Psi &= H_B(t) \Psi \label{num_M} \tag{M},\\
+  i \epsilon^2 \partial_t \Psi &= V(x,t) \Psi \label{num_pot} \tag{P}.
 \end{align}
-\ref{num_kin} can be solved discretely in Fourier-space and \ref{num_pot} by pointwise multiplication with $e^{-i/\epsilon ^2 \int_{t_0}^t dt V(x,t)}$. \ref{num_M} is reduced to the linear differential equation
+The equation (\ref{num_kin}) can be solved discretely in Fourier-space. The solution of (\ref{num_pot}) is given by pointwise multiplication with $e^{-i/\epsilon ^2 \int_{t_0}^t dt V(x,t)}$. The equation (\ref{num_M}) can be reduced to the linear differential equation
 \begin{equation} \label{num_B} \tag{B}
   \frac{d}{dt}y(t) = B(t)y(t)
 \end{equation}
-\defaultcite{SR75} proves the existence of a flow map $U(t,t_0)$ which is a solution to \ref{num_B}. The unitary representation
+Consider the flow map $U(t,t_0)$ associated to (\ref{num_B}). The unitary representation
 \begin{align} \label{eq_rho}
   \rho : SO(d) &\longrightarrow U(L^2(\mathbb{R}^d)) \\
   R &\longmapsto (\rho (R)\Psi)(x) = \Psi(R^{-1} x)
 \end{align}
-maps the solution $U(t, t_0)$ of \ref{num_B} to a solution of \ref{num_M}. The proof of this statement can be found in \defaultcite{GR18}. The exact flow map $U(t, t_0)$ can be approximated by the Magnus expansion proposed by Blanes and Moan \defaultcite{BM06}.
-Direct calculation shows  $[-\Delta$, $H_B(t)] = 0$. Thus the flow maps solving \ref{num_kin} and \ref{num_M} yield a solution to the differential equation
+maps the solution $U(t, t_0)$ of (\ref{num_B}) to a solution of (\ref{num_M}). The proof of this statement can be found in \defaultcite{GR18}. The exact flow map $U(t, t_0)$ can be approximated by the Magnus expansion proposed by Blanes and Moan in \defaultcite{BM06}.
+Direct calculation shows  $[-\Delta$, $H_B(t)] = 0$. Thus the flow maps solving (\ref{num_kin}) and (\ref{num_M}) yield a solution to the differential equation
 \begin{equation} \label{num_K_M} \tag{K+M}
   i \epsilon ^2 \partial_t \Psi = (-\Delta + H_B(t))\Psi
 \end{equation}
-in the following way: Denote the solutions to \ref{num_kin} and \ref{num_M} by $\Phi_{-\Delta}$ and $\Phi_{H_B}$ respectively. The flow map $\Phi_{-\Delta + H_B}$ which is a solution to \ref{num_K_M} then follows as a simple multiplication
+in the following way: Denote the solutions to (\ref{num_kin}) and (\ref{num_M}) by $\Phi_{-\Delta}$ and $\Phi_{H_B}$ respectively. The flow map $\Phi_{-\Delta + H_B}$ which is a solution to (\ref{num_K_M}) is
 \begin{equation*}
   \Phi_{-\Delta + H_B}(t, t_0) = \Phi_{H_B}(t, t_0)\Phi_{-\Delta}(t, t_0) = \Phi_{-\Delta}(t, t_0)\Phi_{H_B}(t, t_0).
 \end{equation*}
-Finally, combining the solutions to \ref{num_K_M} and \ref{num_pot} using a splitting scheme leads to a solution of \ref{num_main}.
+A splitting scheme combining the solutions of (\ref{num_K_M}) and (\ref{num_pot}) leads to a numerical solution of (\ref{num_main}).
 
 \subsection{Splitting}
 Consider a splitting scheme with the coefficients $(a_i, b_i)$ for $1 \leq i \leq n$ and the time grids
 \begin{equation*}
   t_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} b_{j} \quad \text { and } \quad s_{i}=t_{0}+\left(t-t_{0}\right) \sum_{j=1}^{i} a_{j}
 \end{equation*}
-to an initial time $t_0$. \defaultcite{GR18} derives an explicit expression of the solution to \ref{num_main} as follows:
+with an initial time $t_0$. \defaultcite{GR18} derives an explicit expression of the solution to (\ref{num_main}):
 \begin{multline} \label{eq:timesteps}
   \Phi_{H}\left(t_{0}+N h, t_{0}\right) \approx \left(\prod_{j=0}^{N-1} \prod_{i=0}^{n-1} \Phi_{-\Delta}\left(t_{i+1}, t_{i}\right) \Phi_{\rho\left(U\left(t_{0}+N h, t_{i}+j h\right)\right) V}\left(s_{i+1}+j h, s_{i}+j h\right)\right) \\ \times \Phi_{H_{B}}\left(t_{0}+N h, t_{0}\right)
 \end{multline}
-where $h$ is the splitting time step, $\rho$ the representation defined in \cref{eq_rho} and $U(t, t_0)$ the exact flow map to \ref{num_B}. \newline
-To simplify the numerical calculations the propagator for the potential part $\Phi_{V} = \exp(-i \int_{t_0}^t V(x, s)ds)$ can be rewritten using the definition $V(x, t) = \lVert{B(t)x}\rVert_{\mathbb{R}^d}^2 + \phi(x,t) + V_{ext}(x,t)$ to
+where $h$ is the splitting time step, $\rho$ is the representation defined in \cref{eq_rho} and $U(t, t_0)$ is the exact flow map to (\ref{num_B}). \newline
+Note also that for $V(x, t) = \lVert{B(t)x}\rVert_{\mathbb{R}^d}^2 + \phi(x,t) + V_{ext}(x,t)$ we have:
 \begin{equation} \label{eq:rotinv}
   \int_{t_0}^t V(x, s) ds = \left\langle x, \left( -\int _{t_0}^t B^2(s)ds\right)x \right\rangle + \int _{t_0}^t \left( \phi(x, s) + V_{ext}(x, s)  \right) ds.
 \end{equation}
@@ -169,15 +169,15 @@ The \emph{FourierMagneticPropagator}-class carries the header visible below.
   \includegraphics[width = 0.9\textwidth]{graphics/doc_fmp.PNG}
 \end{figure}
 
-In this section, we present the \emph{postpropagate}-function which carries the implementation of \cref{sec:intro} and explain its approach. \newline
-
+In this section, we present the \emph{postpropagate}-function which carries the implementation of \cref{sec:intro} and explain its approach. Note that using the \emph{postpropagate}-function to simulate the time evolution contrasts with the other time propagation algorithms implemented in WaveBlocksND which make use of the \emph{propagate}-function. This difference is due to the structure of our method. WaveBlocksND calls the \emph{propagate}-function for every time step, the \emph{postpropagate}-function on the other hand only when data is actually saved to disk. This happens at specified times, for example after a given time interval $\Delta t = n\cdot dt$. The \emph{FourierMagneticPropagator} does not allow intermediate results to be used to develop the simulation further, rather it requires a complete simulation from start time $t_0$ to the desired time $t_0 + k\cdot \Delta t$ for some $k\in \mathbb{N}$.
+The \emph{propagate}-function cannot be adapted to fulfill this requirement, thus the \emph{postpropagate}-function has to be used.\newline
 The code of the \emph{postpropagate}-function is summarised in Alg. (\ref{alg:postpropagate}). It is based on the algorithm from \defaultcite{GR18}. Its header is visible below.
 \begin{figure}[ht]
   \centering
   \includegraphics[width = 0.9 \textwidth]{graphics/doc_postpropagate.PNG}
 \end{figure}
 
-A few additional remarks to Alg. \ref{alg:postpropagate}: The flow map $\rho$ from \cref{eq_rho} effectively acts as a rotation. These rotations could not directly be applied onto the potential $V$ or the wavefunction $\Psi$ but had to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ the above rotation needs to be reversed to return to the original state. Otherwise subsequent evaluations would be conducted on the wrong grid.\newline
+A few additional remarks to Alg. \ref{alg:postpropagate}: The flow map $\rho$ from \cref{eq_rho} effectively acts as a rotation. These rotations can not be applied directly onto the potential $V$ or the wavefunction $\Psi$ but has to be realised via a rotation of the underlying grid $X$. More precisely, the operation $(\rho(R)A)(x) = A(R^{-1}x)$ requires us to first rotate the grid $X$ by $R^{-1}$ and then evaluate quantity $A$ on the rotated grid. Because $X$ is a class member in WaveBlocksND, after the evaluation of $A$ on $R^{-1}\cdot X$ the above rotation needs to be reversed in order to return to the original state. Otherwise subsequent evaluations would be conducted on the wrong grid.\newline
 Because of the rotational invariance of the first term in \cref{eq:rotinv}, only the second term $\phi(x,s) + V_{ext}(x,s)$ needs to be subjected to such a rotation. \newline
 
 \begin{algorithm}[H]
@@ -186,8 +186,8 @@ Because of the rotational invariance of the first term in \cref{eq:rotinv}, only
     \caption{PostPropagate Function}
     \BlankLine
 
-    \KwData{\emph{As arguments to the function:} class instance \textit{self}; end time $t$.\newline \emph{As arguments to the class instance:} step width $dt$; meshgrid $X$; initial wave function $\Psi_0$; potential $V$; magnetic field $B$; number of components of the wavefunction $N$; scaled Planck constant $\epsilon$; splitting method with coefficients $(a_i, b_i)_{i = 1}^n$; end time of simulation $T$; dimension $d$; frequency of writing to disk $w_n$.}
-    \KwResult{ Computes wavepacket at time $t$ and saves it to class member. Returns end time $t$.}
+    \KwData{\emph{As arguments to the function:} class instance \textit{self}; end time $t$.\newline \emph{As arguments to the class instance:} step width $dt$; meshgrid $X$; initial wave function $\Psi_0$; potential $V$; magnetic field $B$; number of components of the wavefunction $N$; $\epsilon$; splitting method with coefficients $(a_i, b_i)_{i = 1}^n$; end time of simulation $T$; dimension $d$; frequency of writing to disk $w_n$.}
+    \KwResult{The wavepacket at time $t$ is saved into the corresponding class member. It returns end time $t$.}
 
     define stepwidth: $n_{steps}$ = $\lceil t / dt \rceil $\;
     define time grids: $t_a = t_0$, $t_b = t_0$ \;
@@ -234,7 +234,16 @@ and the inital data
 \begin{equation*}
   \Psi_0^{\epsilon}[q, p, Q, P] = \left( \pi \epsilon^2 Q^2 \right)^{-\frac{1}{4}} \exp \left( \frac{i}{2\epsilon^2} PQ^{-1}(x-q)^2 + \frac{i}{\epsilon^2}p(x-q) \right)
 \end{equation*}
- with the parameters from \cref{tab:params}. Note that this corresponds to a wavefunction concentrated in position around $q$ and in momentum around $p$ with uncertainties $\epsilon \lvert Q \rvert / \sqrt{2}$ and $\epsilon \lvert P \rvert / \sqrt{2}$. Additionally consider the step width $dt=0.01$, start time $t_0=0$, end time $T=5$ and the homogeneous, time-independent magnetic field $B = \begin{pmatrix} 0 & -0.5 \\ 0.5 & 0 \end{pmatrix}$. As the splitting method we chose Strang Splitting \defaultcite{G68}. The scaled Planck's constant was set to $\epsilon = 0.25$.
+ with the parameters from \cref{tab:params}. The initial data is visible in \cref{fig:initwf}.
+
+ \begin{figure}[h]
+   \centering
+   \includegraphics[width = 100mm]{../../initial_data/init.pdf}
+   \caption{Initial Data $\Psi_0$ with the parameters from \cref{tab:params}. At a position $x$, the color of the corresponding pixel encodes the phase of $\Psi_0(x)$, the brightness encodes the intensity $\lvert \Psi_0(x) \rvert$.}
+   \label{fig:initwf}
+ \end{figure}
+
+ Note that this corresponds to a wavefunction concentrated in position around $q$ and in momentum around $p$ with uncertainties $\epsilon \lvert Q \rvert / \sqrt{2}$ and $\epsilon \lvert P \rvert / \sqrt{2}$. Additionally consider the step width $dt=0.01$, start time $t_0=0$, end time $T=5$ and the homogeneous, time-independent magnetic field $B = \begin{pmatrix} 0 & -0.5 \\ 0.5 & 0 \end{pmatrix}$. As splitting method we chose Strang Splitting \defaultcite{G68}. We set $\epsilon = 0.25$. The simulation data is sampled on a spatial grid with $1024 \times 1024$ nodes that cover the simulation domain.
 \begin{table}[h]
   \centering
   \begin{tabular}{c|c}
@@ -254,7 +263,7 @@ and the inital data
 
 \end{table}
 \subsubsection{Energy and Norm conservation}
-The evolution of the energies is visible in \cref{fig:threefold_energy}, the evolution of the norms in \cref{fig:threefold_norm}. We found that both energies and norms are approximately constant.
+The evolution of the energies is visible in \cref{fig:threefold_energy}, the evolution of the norms in \cref{fig:threefold_norm}. We see that both energies and norms are approximately constant.
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{graphics/threefold_morse/threefold_energies_block0.PNG}
@@ -308,19 +317,19 @@ To determine performance for different $\epsilon$, we ran a reference simulation
 \begin{figure}[h]
   \centering
   \includegraphics[width = 110mm]{../../convergence/threefold/coeffdiff.png}
-  \caption{Error of the coefficient vectors for different $\epsilon$.}
+  \caption{Error of the coefficient vectors for different $\epsilon$. Threefold Morse Potential.}
   \label{fig:convthreefold}
 \end{figure}
 
 \subsection{Example: Torsional Potential}
 Consider the torsional potential from \defaultcite{FGL09} for $x \in \mathbb{R}^2$:
 \begin{equation*}
-  V_{ext}(x) = \sum_{i=1}^2 1 - \cos(x_i).
+  V_{ext}(x) = \sum_{i=1}^2 1 - \cos(x_i),
 \end{equation*}
-Consider $\Psi_0$ to be as in the example above with the parameters from \cref{tab:params}, $\epsilon = 0.25$ and the splitting to be Strang Splitting \defaultcite{G68}.
+and let $\Psi_0$ be as in the example above with the parameters from \cref{tab:params}, $\epsilon = 0.25$ and the splitting Strang Splitting again.
 
 \subsubsection{Energy and Norm conservation}
-The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and \cref{fig:cos_norm} respectively.
+The energy and norm evolution over time is depicted in \cref{fig:cos_energy,fig:cos_norm}.
 
 \begin{figure}[h]
   \begin{subfigure}[b]{0.45 \textwidth}
@@ -349,7 +358,7 @@ The energy and norm evolution over time is depicted in \cref{fig:cos_energy} and
 
 \subsubsection{Resource Consumption}
 We ran the simulation on a setup identical to the one mentioned above and again recorded the resource consumpion using Linux' time and pidstat commands. The simulation lasted for a total of 7:45:18 (h:min:s) and consumed $247 \%$ CPU. The usage of RSS, VSZ and CPU over time is visible in \cref{fig:cos_resource}.
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{subfigure}[b]{0.45 \textwidth}
     \includegraphics[width = \textwidth]{../parser/cospot_perCPU.pdf}
     \caption{Percentage of CPU.}
@@ -374,16 +383,16 @@ The same considerations as in \cref{sec:threefold_conv} were made for the torsio
 \begin{figure}[H]
   \centering
   \includegraphics[width = 110mm]{../../convergence/torsional/coeffdiff.png}
-  \caption{Error of the coefficient vectors for different $\epsilon$.}
+  \caption{Error of the coefficient vectors for different $\epsilon$. Torsional Potential.}
   \label{fig:convtorsional}
 \end{figure}
 
 \section{Discussion and Conclusion}
-In the course of this semester thesis, we implemented the method developed by Rietmann and Gradinaru in \defaultcite{GR18} into the WaveblocksND framework. We found that energies and norms are conserved well in both of the cases we explored.
-From \cref{fig:convthreefold} and \cref{fig:convtorsional} we can conclude that the method is well suited for values of $\epsilon > 0.125$, but is subject to increasing errors for values of $\epsilon$ smaller than that.\newline
-The major disadvantage of this method is its speed. The section above shows that simulations are time- and resource intensive. Additionally the method is structured such that time-steps are not consecutive but have to be calculated individually. I.e. to write data to the disk after the 10th and 20th time step (for example to calculate the energy at those times) the simulation needs to run the first 10 time-steps, write to disk, restart at $t_0$ and run the first 20 time-steps. This doesn't present itself as a problem when only the state at a certain end-time $T$ is needed but quickly becomes costly if a high resolution in the time-steps is required.
+We implemented the method developed by Rietmann and Gradinaru in \defaultcite{GR18} into the WaveblocksND framework. We found that energies and norms are conserved well in both of the cases we explored.
+From \cref{fig:convthreefold,fig:convtorsional} we can conclude that the method is well suited for values of $\epsilon > 0.125$, but is subject to increasing errors for values of $\epsilon$ smaller than that.\newline
+The major disadvantage of this method is its speed. The section above shows that simulations are time- and resource intensive. Additionally the method is structured such that time-steps are not consecutive but have to be calculated individually. This means that in order to write data to the disk after the 10th and 20th time step (for example to calculate the energy at those times) the simulation needs to run the first 10 time-steps, write to disk, restart at $t_0$ and run the first 20 time-steps. This doesn't present itself as a problem when only the state at a certain end-time $T$ is needed but quickly becomes costly if a high resolution of the evolution itself is required.
 
-For further research, one could investigate the performance of this method for a particle in a time-dependent magnetic field as well as in dimensions $d > 2$. Additionally performance could be compared to the semi-classical wavepacket approach from \defaultcite{FGL09} also implemented in WaveBlocksND.
+One could further investigate the performance of this method for a particle in a time-dependent magnetic field as well as in dimensions $d > 2$. Additionally performance could be compared to the semi-classical wavepacket approach from \defaultcite{FGL09} also implemented in WaveBlocksND.
 
 
 \begin{appendices}
@@ -462,6 +471,14 @@ The time evolution of the wavepacket $\Psi$ is portrayed in \cref{fig:torsional_
 %\bibliographystyle{apalike}
 \bibliographystyle{plain}
 \bibliography{bibliography/references}
+\clearpage
 
+\setlength{\voffset}{0cm}
+\setlength{\hoffset}{0cm}
+
+\includepdf[pages=-]{graphics/einverstaendniserklaerung.pdf}
+
+\setlength{\voffset}{-2.54cm}
+\setlength{\hoffset}{-2.54cm}
 
 \end{document}
